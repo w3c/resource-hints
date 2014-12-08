@@ -124,6 +124,39 @@
 
               <li>The optimal time to initiate a resource fetch required for the next navigation is dependent on the negotiated transport protocol, users current connectivity profile, available device resources, and other context specific variables. The user agent should determine the optimal time at which to initiate the fetch - e.g. the user agent MAY decide to wait until all other downloads are finished, or MAY choose to pipeline requests with low priority if the negotiated protocol supports the necessary primitives. Alternatively, the user agent MAY opt-out from initiating the fetch due to resource constraints, user preferences, or other factors.</li>
             </ul>
+
+            <p><a>Speculative preload</a> hints may be combined with other <a>preload</a> policies:</p>
+
+            <ul>
+              <li>For HTML responses marked with the `next` policy:</li>
+              <ul>
+                <li>If `inert` policy is omitted, the user agent MAY preprocess the HTML response by also fetching the necessary subresources and executing them (i.e. <dfn>prerender</dfn> the response). The decision for which prerendering steps are performed is deferred to the user agent. The user agent MAY:</li>
+
+                <ul>
+                  <li>Allocate fewer CPU, GPU, or memory resources to prerendered content.</li>
+                  <li>Delay some requests until the requested HTML resource is made visible - e.g. media downloads, plugin content, and so on.</li>
+                  <li>Prevent prerendering from being initiated when there are limited resources available.</li>
+                  <li>Abandon prendering due to high resource requirements - e.g. exceeded memory requirements, high CPU usage, and so on.</li>
+                  <li>Abandon prerendering due to the type or properties of the preloaded content:</li>
+                  <ul>
+                    <li>If the target exhibits non-idempotent behavior: mutations to shared local storage, `XMLHttpRequest` with a verb other than GET, HEAD, or OPTION, and so on.</li>
+                    <li>If the target triggers a condition that requires user input: confirmation dialogs, authentication prompts, alerts, and so on.</li>
+                  </ul>
+                </ul>
+                <li>If `inert` policy is present the user agent MUST NOT <a>prerender</a> the response.</li>
+              </ul>
+
+              <li>For all other content-types with the `next` policy:</li>
+              <ul>
+                <li>If `inert` policy is omitted, the user agent MAY perform appropriate preprocessing on the fetched response - e.g. preparse HTML, CSS, or JavaScript responses, decode an image ahead of time, and so on, but it MUST NOT automatically execute or apply it against the current page context.</li>
+                <li>If `inert` policy is present, the user agent SHOULD NOT apply any preprocessing on the response and MUST NOT automatically execute or apply it against the current page context.</li>
+            </ul>
+
+            <p>The above processing strategies are not an exhaustive list. The user agent MAY implement other and additional strategies.</p>
+
+            <div class="note">
+              <p>To ensure compatibility and improve the success rate of prerendering requests the target page should use the [[PAGE-VISIBILITY]] to determine the visibility state of the page as it is being rendered and implement appropriate logic to avoid actions that may cause the preload to be abandoned (e.g. non-idempotent requests), or unwanted side-effects from being triggered (e.g. analytics beacons firing prior to the page being displayed).</p>
+            </div>
           </dd>
         </dl>
       </section>
@@ -132,35 +165,6 @@
 
   <section>
     <h2>Process</h2>
-
-    <section>
-      <h2>Prerendering HTML responses</h2>
-
-      <p>By default, the user agent MAY perform appropriate preprocessing on the fetched response - e.g. preparse HTML, CSS, or JavaScript responses, decode an image ahead of time, and so on. In particular, for HTML responses marked with the `next` policy:</p>
-
-      <ul>
-        <li>If `inert` policy is omitted, the user agent MAY preprocess and prerender the HTML response by also fetching the necessary subresources and executing them. The decision for which prerendering steps are performed is deferred to the user agent. The user agent MAY:</li>
-
-        <ul>
-          <li>Allocate fewer CPU, GPU, or memory resources to prerendered content.</li>
-          <li>Delay some requests until the requested HTML resource is made visible - e.g. media downloads, plugin content, and so on.</li>
-          <li>Prevent prerendering from being initiated when there are limited resources available.</li>
-          <li>Abandon prendering due to high resource requirements - e.g. exceeded memory requirements, high CPU usage, and so on.</li>
-          <li>Abandon prerendering due to the type or properties of the preloaded content:</li>
-          <ul>
-            <li>If the target exhibits non-idempotent behavior: mutations to shared local storage, `XMLHttpRequest` with a verb other than GET, HEAD, or OPTION, and so on.</li>
-            <li>If the target triggers a condition that requires user input: confirmation dialogs, authentication prompts, alerts, and so on.</li>
-          </ul>
-        </ul>
-        <li>If combined with the `inert` policy the user agent MUST NOT invoke prerendering logic.</li>
-      </ul>
-
-      <p>The above processing strategies are not an exhaustive list. The user agent MAY implement other and additional strategies.</p>
-
-      <div class="note">
-        <p>To ensure compatibility and improve the success rate of prerendering requests the target page should use the [[PAGE-VISIBILITY]] to determine the visibility state of the page as it is being rendered and implement appropriate logic to avoid actions that may cause the preload to be abandoned (e.g. non-idempotent requests), or unwanted side-effects from being triggered (e.g. analytics beacons firing prior to the page being displayed).</p>
-      </div>
-    </section>
 
     <section>
       <h2>Communicating hint probability</h2>

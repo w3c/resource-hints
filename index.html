@@ -167,7 +167,7 @@
     <h2>Process</h2>
 
     <section>
-      <h2>Communicating hint probability</h2>
+      <h2>Hint probability</h2>
 
       <p>In addition to specifying the hint type, its fetch parameters, and the resource URL, the developer can communicate the expected probability that the specified resource hint will be used.</p>
 
@@ -181,7 +181,7 @@
 
       <ul>
         <li>With a <code><a>preconnect</a></code> relation to indicate probability of initiating a fetch against the specified origin, either within the current navigation context, or within the next navigation context.</li>
-        <li>With a <code><a>speculative preload</a></code> relation.
+        <li>With a <code><a>speculative preload</a></code> relation to indicate probability of using the specified resource within the next navigation context.
       </ul>
 
       <p>If the <code><a>pr</a></code> attribute is omitted for above cases, the user agent MAY assign a default probability value based on own heuristics, past navigation data, and so on.</p>
@@ -285,7 +285,7 @@
     <h2>Prerendering (preload)</h2>
     <p>The <a title="preload">preload hint</a> can be used to prerender the destination page, enabling an instant navigation experience once the user triggers the navigation.</p>
 
-    <p>To deliver an instant navigation experience the application can specify one or more <code><a>preload</a></code> relations, each of which points to a destination page (an HTML resource), and set their <code><a>loadpolicy</a></code> to <code><a>next</a></code> to indicate that the resources are intended for the next navigation. In turn, the user agent may fetch and process the HTML document, fetch its subresources, and perform other work to deliver an instant navigation. Alternatively, if the application wants to only prefetch the HTML response, it can set the <code><a>loadpolicy</a></code> to `next inert`, to indicate that the response should not be prerendered.</p>
+    <p>To deliver an instant navigation experience the application can specify one or more <code><a>preload</a></code> relations, each of which points to a destination page (an HTML resource), and set their <code><a>loadpolicy</a></code> to <code><a>next</a></code> to indicate that the resources are intended for the next navigation. In turn, the user agent may fetch and process the HTML document, fetch its subresources, and perform other work to deliver an instant navigation - i.e. <a>prerender</a> the page. Alternatively, if the application wants to only prefetch the HTML response, it can set the <code><a>loadpolicy</a></code> to `next inert`, to indicate that the response should not be prerendered.</p>
 
     <p>Finally, because prerendering may require a lot of resources, the application can specify the probability (via <code><a>pr</a></code> attribute) of each target to help the user agent deliver the best user experience.</p>
   </section>

@@ -115,7 +115,7 @@
         <dl>
           <dt><dfn>next</dfn></dt>
           <dd>
-            Indicates that the specified resource is required by the next navigation context, and that the user agent SHOULD fetch the resource if possible.
+            Indicates that the specified resource may be required by the next navigation context (i.e. <dfn>speculative preload</dfn>), and that the user agent SHOULD fetch the resource if possible.
 
             <p>Resource fetches that may be required for the next navigation can negatively impact the performance of the current navigation context due to additional contention for the CPU, GPU, memory, and network resources. To address this, the user agent MUST implement logic to reduce and eliminate such contention:</p>
 
@@ -177,7 +177,7 @@
 
       <ul>
         <li>With a <code><a>preconnect</a></code> relation to indicate probability of initiating a fetch against the specified origin, either within the current navigation context, or within the next navigation context.</li>
-        <li>With a <code><a>preload</a></code> relation with <code><a>loadpolicy</a></code> containing the <code><a>next</a></code> policy.
+        <li>With a <code><a>speculative preload</a></code> relation.
       </ul>
 
       <p>If the <code><a>pr</a></code> attribute is omitted for above cases, the user agent MAY assign a default probability value based on own heuristics, past navigation data, and so on.</p>
@@ -189,19 +189,19 @@
         <li>Execute a partial optimization relative to the specified hint due to resource constraints or other reasons.</li>
         <ul>
           <li><code><a>preconnect</a></code> MAY fallback to a partial handshake (DNS only, or DNS+TCP for HTTPS origins).</li>
-          <li><code><a>preload</a></code> MAY fallback to <code><a>preconnect</a></code> for specified origin, or apply a custom preprocessing strategy for the target resource, and if applicable, its sub-resources: <code><a>preconnect</a></code> only; fetch the target resource but defer fetch of sub-resources; fetch sub-resources but delay their processing, and so on.</li>
+          <li><code><a>speculative preload</a></code> MAY fallback to <code><a>preconnect</a></code> for specified origin, or apply a custom preprocessing strategy for the target resource, and if applicable, its sub-resources: <code><a>preconnect</a></code> only; fetch the target resource but defer fetch of sub-resources; fetch sub-resources but delay their processing, and so on.</li>
         </ul>
       </ul>
 
       <div class="note">
-        <p>To optimize the overall user experience the user agent should account for local context and specified probability of a speculative hint. For example, on a resource constrained device the user agent may decide to only execute high probability hints. Alternatively, it may decide to perform partial processing of the hint, such as downgrading <a>preload</a> to <a>preconnect</a>, performing partial preprocessing, and so on. Performing a partial optimization allows the user agent to improve performance even if a full optimization cannot be performed. Conversely, on a device with sufficient resources, the user agent may execute all of the specified hints as far as possible.</p>
+        <p>To optimize the overall user experience the user agent should account for local context and specified probability of a speculative hint. For example, on a resource constrained device the user agent may decide to only execute high probability hints. Alternatively, it may decide to perform partial processing of the hint, such as downgrading <a>speculative preload</a> to a <a>preconnect</a>, performing partial preprocessing, and so on. Performing a partial optimization allows the user agent to improve performance even if a full optimization cannot be performed. Conversely, on a device with sufficient resources, the user agent may execute all of the specified hints as far as possible.</p>
       </div>
     </section>
 
     <section>
       <h2>Load and error events</h2>
 
-      <p>The user agent MUST NOT <a href="https://html.spec.whatwg.org/#delay-the-load-event">delay the `load` event</a> of the document due to outstanding <code><a>preconnect</a></code> or <code><a>preload</a></code> initiated requests.</p>
+      <p>The user agent MUST NOT <a href="https://html.spec.whatwg.org/#delay-the-load-event">delay the `load` event</a> of the document due to outstanding <code><a>preconnect</a></code> or <code><a>speculative preload</a></code> initiated requests.</p>
 
       <p>The decision on whether a resource hint is executed, and if so, whether full or partial processing is applied is deferred to the user agent. As a result, element-level `load` and `error` JavaScripts events are not guaranteed to fire, and if they do, do not guarantee that full processing was applied. However, the user agent SHOULD fire the appropriate `load` and `error` events when possible, to allow the application to track which hints were executed and when.</p>
     </section>
@@ -218,17 +218,20 @@
   hint.href = "/article/part3.html";
   document.head.appendChild(hint);
 
-  // cancel preload
+  // remove preload hint (UA may cancel request)
   document.head.removeChild(hint);
       </pre>
 
       <div class="note">
         <p>The application can use dynamic scheduling to react and adapt to user initiated actions - e.g. initiate a speculative resource fetch in response to recent user activity, cancel previous speculative fetch, and so on.</p>
       </div>
+    </section>
 
-      <p>The decision to abort a request initiated via a resource hint is deferred to the user agent, which MAY use local context and other signals to determine if the request should continue. For example, the removal of the hint element from the document MAY be used as a signal that the requested optimization is no longer necessary - e.g. the application anticipates that the next user action has changed and wants to replace the previous hint with a new one.</p>
+    <section>
+      <h2>Cancelling hint-initiated optimizations</h2>
+      <p>The decision to cancel a <code><a>preconnect</a></code> or <code><a>speculative preload</a></code> request is deferred to the user agent, which MAY use local context and other signals to determine if and when the optimization should be aborted. For example, the removal of the hint element from the document MAY be used as a signal that the requested optimization is no longer necessary and should be aborted - see <a href="#dynamic-scheduling"></a>.
 
-      <p>The user agent SHOULD allow requests initiated via a resource hint to continue across navigations - see <a href="#reactive-resource-prefetching-preload"></a>. However, the user agent MAY cancel these requests once it determines that they are not required by the new destination.</p>
+      <p>The user agent SHOULD allow the optimization to continue across navigations. However, the user agent MAY cancel these requests once it determines that they are not required by the new destination - see <a href="#reactive-resource-prefetching-preload"></a>.</p>
     </section>
 
     <section>
@@ -269,9 +272,9 @@
       <h2>Reactive resource prefetching (preload)</h2>
       <p>The <a title="preload">preload hint</a> can be used to implement a "reactive prefetch strategy" that leverages the knowledge of where the user is heading next and enables the application to begin prefetching critical resources in parallel with the navigation request.</p>
 
-      <p>To achieve the above behavior the application can listen for click events and dynamically insert relevant <code><a>preload</a></code> relations (with <code><a>loadpolicy</a></code> set to <code><a>next</a></code>) for critical resources required by the next navigation. In turn, the user agent can fetch the hinted resources in parallel with the navigation request, making the critical resources available sooner.</p>
+      <p>To achieve the above behavior the application can listen for click events and dynamically insert relevant <code><a>speculative preload</a></code> relations for critical resources required by the next navigation. In turn, the user agent can fetch the hinted resources in parallel with the navigation request, making the critical resources available sooner.</p>
 
-      <p>The enabling feature of this strategy is that requests initiated via <code><a>preload</a></code> relation with <code><a>loadpolicy</a></code> set to <code><a>next</a></code> may be allowed to persist across navigations.</p>
+      <p>The enabling feature of this strategy is that requests initiated via <code><a>speculative preload</a></code> relation may be allowed to persist across navigations.</p>
   </section>
 
   <section>

@@ -88,7 +88,7 @@
     <section>
       <h2>Preload</h2>
 
-      <p>The <code><dfn>preload</dfn></code> relationship is used to declare a resource and its fetch properties. This specification extends its functionality with additional processing policies that enable efficient fetching of resources that may be required by the next navigation, such that the user agent can deliver a faster response once the resource is requested.</p>
+      <p>The <code><dfn>preload</dfn></code> relationship is used to declare a resource and its fetch properties. This specification extends its functionality with additional processing policies that enable efficient fetching of resources that might be required by the next navigation, such that the user agent can deliver a faster response once the resource is requested.</p>
 
       <pre class="example highlight html">
   &lt;!-- fetch and preprocess for next navigation -->
@@ -105,7 +105,7 @@
       <section>
         <h2>`next` load and processing policy</h2>
 
-        <p>This specification extends the <code><dfn>loadpolicy</dfn></code> of <code><a>preload</a></code> relation, which consists of a space-separated set of the keywords that determine the load and processing policy of the specified resource:</p>
+        <p>This specification extends the <code><dfn>loadpolicy</dfn></code> of <code><a>preload</a></code> relation, which consists of a space-separated set of keywords. These keywords determine the load and processing policy of the specified resource:</p>
 
         <pre class="example highlight html">
   &lt;link rel="preload" href="/assets/font.woff" as="font" loadpolicy="next"&gt;
@@ -122,7 +122,7 @@
             <ul>
               <li>Resource fetches required for the next navigation MUST have lower relative priority and should not block or interfere with resource fetches required by the current navigation context.</li>
 
-              <li>The optimal time to initiate a resource fetch required for the next navigation is dependent on the negotiated transport protocol, users current connectivity profile, available device resources, and other context specific variables. The user agent should determine the optimal time at which to initiate the fetch - e.g. the user agent MAY decide to wait until all other downloads are finished, or MAY choose to pipeline requests with low priority if the negotiated protocol supports the necessary primitives. Alternatively, the user agent MAY opt-out from initiating the fetch due to resource constraints, user preferences, or other factors.</li>
+              <li>The optimal time to initiate a resource fetch required for the next navigation is dependent on the negotiated transport protocol, users current connectivity profile, available device resources, and other context specific variables. The user agent is left to determine the optimal time at which to initiate the fetch - e.g. the user agent MAY decide to wait until all other downloads are finished, or MAY choose to pipeline requests with low priority if the negotiated protocol supports the necessary primitives. Alternatively, the user agent MAY opt-out from initiating the fetch due to resource constraints, user preferences, or other factors.</li>
             </ul>
 
             <p><a>Speculative preload</a> hints may be combined with other <a>preload</a> policies:</p>

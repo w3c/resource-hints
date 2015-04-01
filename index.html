@@ -117,10 +117,10 @@
           <dd>
             Indicates that the specified resource may be required by the next navigation context (i.e. <dfn>speculative preload</dfn>), and that the user agent SHOULD fetch the resource if possible.
 
-            <p>Resource fetches that may be required for the next navigation can negatively impact the performance of the current navigation context due to additional contention for the CPU, GPU, memory, and network resources. To address this, the user agent MUST implement logic to reduce and eliminate such contention:</p>
+            <p>Resource fetches that may be required for the next navigation can negatively impact the performance of the current navigation context due to additional contention for the CPU, GPU, memory, and network resources. To address this, the user agent SHOULD implement logic to reduce and eliminate such contention:</p>
 
             <ul>
-              <li>Resource fetches required for the next navigation MUST have lower relative priority and should not block or interfere with resource fetches required by the current navigation context.</li>
+              <li>Resource fetches required for the next navigation SHOULD have lower relative priority and SHOULD NOT block or interfere with resource fetches required by the current navigation context.</li>
 
               <li>The optimal time to initiate a resource fetch required for the next navigation is dependent on the negotiated transport protocol, users current connectivity profile, available device resources, and other context specific variables. The user agent is left to determine the optimal time at which to initiate the fetch - e.g. the user agent MAY decide to wait until all other downloads are finished, or MAY choose to pipeline requests with low priority if the negotiated protocol supports the necessary primitives. Alternatively, the user agent MAY opt-out from initiating the fetch due to resource constraints, user preferences, or other factors.</li>
             </ul>

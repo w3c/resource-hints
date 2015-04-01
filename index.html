@@ -211,26 +211,33 @@
     </section>
 
     <section>
-      <h2>Fetching the resource hint</h2>
-      <p>A <dfn>resource hint link</dfn> is a <a>preconnect</a> or <a>preload</a> relationship that is used to indicate an origin or resource that should be connected to, or fetched, by the user agent. The <a>resource hint link</a>'s may be specified in the document markup, and may be dynamically added to and removed from the document.</p>
+      <h2>Fetching the resource hint link</h2>
+      <p>A <dfn>resource hint link</dfn> is a <a>preconnect</a> or <a>preload</a> relationship that is used to indicate an origin or resource that should be connected to, or fetched, by the user agent. The <a>resource hint link</a>'s may be specified in the document markup, MAY be provided via the HTTP `Link` header, and MAY be dynamically added to and removed from the document.</p>
+
+      <pre class="example">
+  Link: &lt;https://example.com&gt;; rel=preconnect
+  Link: &lt;https://example.com/next-page.html&gt;; rel=preload; as=html; loadpolicy=next inert;
+  Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=preload; as=image; media=min-resolution:2dppx; loadpolicy=next
+      </pre>
 
       <pre class="example highlight js">
   &lt;link rel="preconnect" href="//cdn.example.com" pr="0.42"&gt;
   &lt;link rel="preload" href="//example.com/next-page.html" pr="0.75" loadpolicy="next"&gt;
+      </pre>
 
-  &lt;script&gt;
-  // insert dynamic resource hint
+      <pre class="example highlight js">
   var hint = document.createElement("link");
   hint.rel = "preload";
+  hint.as = "html"
   hint.loadpolicy = "next";
   hint.href = "/article/part3.html";
   document.head.appendChild(hint);
-  &lt;/script&gt;
       </pre>
 
       <p>The appropriate times to connect to a host, or <a href="http://www.w3.org/TR/html5/document-metadata.html#concept-link-obtain">obtain</a> the specified resource are:</p>
 
       <ul>
+        <li>When the user agent that supports [[!RFC5988]] processes <a>resource hint link</a>'s specified via the <a href="http://tools.ietf.org/html/rfc5988">Link HTTP header</a>.</li>
         <li>When the <a>resource hint link</a>'s `link` element is <a href="http://www.w3.org/TR/html5/infrastructure.html#insert-an-element-into-a-document">inserted into a document</a>.</li>
         <li>When the <a>resource hint link</a> is created on a `link` element that is already <a href="http://www.w3.org/TR/html5/infrastructure.html#in-a-document">in a Document</a>.</li>
         <li>When the `href` attribute of the `link` element of an <a>resource hint link</a> that is already <a href="http://www.w3.org/TR/html5/infrastructure.html#in-a-document">in a Document</a> is changed.
@@ -238,27 +245,13 @@
       </ul>
 
       <p>The user agent MAY delay the fetch of <a>speculative preload</a> to minimize resource contention for the current navigation context.</p>
-    </section>
 
-    <section>
-      <h2>Cancelling hint-initiated fetches</h2>
       <p>The decision to cancel a <code><a>preconnect</a></code> or <code><a>speculative preload</a></code> fetch is deferred to the user agent, which MAY use local context and other signals to determine if and when the optimization should be aborted:<p>
 
       <ul>
         <li>The user agent SHOULD abort the request if the `href` attribute on the `link` element of an <a>resource hint link</a> is removed, or its value is set to an empty string.</li>
         <li>The user agent SHOULD allow the requests initiated via the <a>resource hint link</a> to continue across navigations. However, the user agent MAY cancel these requests once it determines that they are not required by the new destination - see <a href="#reactive-resource-prefetching-preload"></a>.</p></li>
       </ul>
-    </section>
-
-    <section>
-      <h2>Interoperability with HTTP Link header</h2>
-      <p>A user agent that supports [[!RFC5988]] SHOULD process resource hints specified via the <a href="http://tools.ietf.org/html/rfc5988">Link HTTP header</a>. The application can provide one or more preload relations via multiple HTTP headers or via a comma separated list.</p>
-
-      <pre class="example">
-  Link: &lt;https://example.com&gt;; rel=preconnect
-  Link: &lt;https://example.com/next-page.html&gt;; rel=preload; as=html; loadpolicy=next inert;
-  Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=preload; as=image; media=min-resolution:2dppx; loadpolicy=next
-      </pre>
     </section>
   </section>
 

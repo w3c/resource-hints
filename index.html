@@ -35,7 +35,8 @@
         value: 'Commit history.',
         href: 'https://github.com/w3c/resource-hints/commits/gh-pages/index.html'
       }]
-    }]
+    }],
+    wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/45211/status"
   };
   </script>
 </head>
@@ -129,28 +130,32 @@
             <p><a>Speculative preload</a> hints may be combined with other <a>preload</a> policies:</p>
 
             <ul>
-              <li>For HTML responses marked with the `next` policy:</li>
+              <li>For HTML responses marked with the `next` policy:
               <ul>
-                <li>If `inert` policy is omitted, the user agent MAY preprocess the HTML response by also fetching the necessary subresources and executing them (i.e. <dfn>prerender</dfn> the response). The decision for which prerendering steps are performed is deferred to the user agent. The user agent MAY:</li>
+                <li>If `inert` policy is omitted, the user agent MAY preprocess the HTML response by also fetching the necessary subresources and executing them (i.e. <dfn>prerender</dfn> the response). The decision for which prerendering steps are performed is deferred to the user agent. The user agent MAY:
 
                 <ul>
                   <li>Allocate fewer CPU, GPU, or memory resources to prerendered content.</li>
                   <li>Delay some requests until the requested HTML resource is made visible - e.g. media downloads, plugin content, and so on.</li>
                   <li>Prevent prerendering from being initiated when there are limited resources available.</li>
                   <li>Abandon prendering due to high resource requirements - e.g. exceeded memory requirements, high CPU usage, and so on.</li>
-                  <li>Abandon prerendering due to the type or properties of the preloaded content:</li>
+                  <li>Abandon prerendering due to the type or properties of the preloaded content:
                   <ul>
                     <li>If the target exhibits non-idempotent behavior: mutations to shared local storage, `XMLHttpRequest` with a verb other than GET, HEAD, or OPTION, and so on.</li>
                     <li>If the target triggers a condition that requires user input: confirmation dialogs, authentication prompts, alerts, and so on.</li>
                   </ul>
+                  </li>
                 </ul>
+                </li>
                 <li>If `inert` policy is present the user agent MUST NOT <a>prerender</a> the response.</li>
               </ul>
-
-              <li>For all other content-types with the `next` policy:</li>
+              </li>
+              <li>For all other content-types with the `next` policy:
               <ul>
                 <li>If `inert` policy is omitted, the user agent MAY perform appropriate preprocessing on the fetched response - e.g. preparse HTML, CSS, or JavaScript responses, decode an image ahead of time, and so on, but it MUST NOT automatically execute or apply it against the current page context.</li>
                 <li>If `inert` policy is present, the user agent SHOULD NOT apply any preprocessing on the response and MUST NOT automatically execute or apply it against the current page context.</li>
+              </ul>
+              </li>
             </ul>
 
             <p>The above processing strategies are not an exhaustive list. The user agent MAY implement other and additional strategies.</p>
@@ -251,7 +256,7 @@
 
       <ul>
         <li>The user agent SHOULD abort the request if the `href` attribute on the `link` element of an <a>resource hint link</a> is removed, or its value is set to an empty string.</li>
-        <li>The user agent SHOULD allow the requests initiated via the <a>resource hint link</a> to continue across navigations. However, the user agent MAY cancel these requests once it determines that they are not required by the new destination - see <a href="#reactive-resource-prefetching-preload"></a>.</p></li>
+        <li>The user agent SHOULD allow the requests initiated via the <a>resource hint link</a> to continue across navigations. However, the user agent MAY cancel these requests once it determines that they are not required by the new destination - see <a href="#reactive-resource-prefetching-preload"></a>.</li>
       </ul>
     </section>
   </section>

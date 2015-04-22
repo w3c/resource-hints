@@ -66,7 +66,7 @@
 
     <p>Many web applications already leverage a variety of prefetching techniques. This includes, but is not limited to, using `XMLHttpRequest` to fetch and cache assets before they are needed. However, these implementations are application specific, are not interoperable, and do not provide the same level of performance as the browser-provided primitives. Worse, these implementations sometimes conflict with the browser logic and result in delayed or unnecessary resource fetches that degrade overall page performance.</p>
 
-    <p>This specification defines the <a>preconnect</a> relationship and extends the <a>preload</a> relationship of the HTML Link Element (`<link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch to improve page performance.</p>
+    <p>This specification defines the <a>preconnect</a> relationship and extends the <a>preload</a> relationship of the HTML Link Element (`&lt;link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch to improve page performance.</p>
   </section>
 
   <section>
@@ -196,11 +196,12 @@
 
       <ul>
         <li>Execute some, none, or all of the optimizations implied by the resource hint, and may also invoke additional optimizations based on its own heuristics.</li>
-        <li>Execute a partial optimization relative to the specified hint due to resource constraints or other reasons.</li>
+        <li>Execute a partial optimization relative to the specified hint due to resource constraints or other reasons.
         <ul>
           <li><code><a>preconnect</a></code> MAY fallback to a partial handshake (DNS only, or DNS+TCP for HTTPS origins).</li>
           <li><code><a>speculative preload</a></code> MAY fallback to <code><a>preconnect</a></code> for specified origin, or apply a custom preprocessing strategy for the target resource, and if applicable, its sub-resources: <code><a>preconnect</a></code> only; fetch the target resource but defer fetch of sub-resources; fetch sub-resources but delay their processing, and so on.</li>
         </ul>
+        </li>
       </ul>
 
       <div class="note">

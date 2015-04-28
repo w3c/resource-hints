@@ -102,7 +102,14 @@
   &lt;link rel="prefetch" href="/library.js" as="script"&gt;
       </pre>
 
-      <p>The user agent SHOULD NOT apply any preprocessing on the response and MUST NOT automatically execute or apply it against the current page context.</p>
+      <ul>
+        <li>The user agent SHOULD NOT apply preprocessing on the response and MUST NOT automatically execute or apply it against the current page context.</li>
+        <li>The `as` attribute is an OPTIONAL attribute that must conform to requirements defined in [[PRELOAD]].</li>
+      </ul>
+
+      <div class="note">
+        The `as` attribute can be used by the application to communicate the resource destination context, such that the user agent can optimize the fetching process - e.g. set appropriate request headers, transport priority, and so on.
+      </div>
     </section>
 
     <section>

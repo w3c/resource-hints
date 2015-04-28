@@ -184,14 +184,6 @@
     </section>
 
     <section>
-      <h2>Load and error events</h2>
-
-      <p>The user agent MUST NOT <a href="https://html.spec.whatwg.org/#delay-the-load-event">delay the `load` event</a> of the document due to outstanding <code><a>preconnect</a></code> or <code><a>speculative fetch</a></code> initiated requests.</p>
-
-      <p>The decision on whether a resource hint is executed, and if so, whether full or partial processing is applied is deferred to the user agent. As a result, element-level `load` and `error` JavaScripts events are not guaranteed to fire, and if they do, do not guarantee that full processing was applied. However, the user agent SHOULD fire the appropriate `load` and `error` events when possible, to allow the application to track which hints were executed and when.</p>
-    </section>
-
-    <section>
       <h2>Fetching the resource hint link</h2>
       <p>The <a>resource hint link</a>'s may be specified in the document markup, MAY be provided via the HTTP `Link` header, and MAY be dynamically added to and removed from the document.</p>
 
@@ -241,6 +233,14 @@
 
         <li>The optimal time to initiate a resource fetch required for the next navigation is dependent on the negotiated transport protocol, users current connectivity profile, available device resources, and other context specific variables. The user agent is left to determine the optimal time at which to initiate the fetch - e.g. the user agent MAY decide to wait until all other downloads are finished, or MAY choose to pipeline requests with low priority if the negotiated protocol supports the necessary primitives. Alternatively, the user agent MAY opt-out from initiating the fetch due to resource constraints, user preferences, or other factors.</li>
       </ul>
+    </section>
+
+    <section>
+      <h2>Load and error events</h2>
+
+      <p>The user agent MUST NOT <a href="https://html.spec.whatwg.org/#delay-the-load-event">delay the `load` event</a> of the document due to outstanding <code><a>preconnect</a></code> or <code><a>speculative fetch</a></code> initiated requests.</p>
+
+      <p>The decision on whether a resource hint is executed, and if so, whether full or partial processing is applied is deferred to the user agent. As a result, element-level `load` and `error` JavaScripts events are not guaranteed to fire, and if they do, do not guarantee that full processing was applied. However, the user agent SHOULD fire the appropriate `load` and `error` events when possible, to allow the application to track which hints were executed and when.</p>
     </section>
   </section>
 

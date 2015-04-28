@@ -152,7 +152,7 @@
     <section>
       <h2>Hint probability</h2>
 
-      <p>In addition to specifying the hint type, its fetch parameters, and the resource URL, the developer can communicate the expected probability that the specified resource hint will be used.</p>
+      <p>In addition to specifying the hint type, the application MAY indicate the expected probability that the specified resource hint will be used.</p>
 
       <pre class="highlight example html">
   &lt;link rel="preconnect" href="//cdn.example.com" pr="0.42"&gt;
@@ -167,9 +167,9 @@
         <li>With a <code><a>speculative fetch</a></code> relation to indicate probability of using the specified resource within the next navigation context.</li>
       </ul>
 
-      <p>If the <code><a>pr</a></code> attribute is omitted for above cases, the user agent MAY assign a default probability value based on own heuristics, past navigation data, and so on.</p>
+      <p>If the <code><a>pr</a></code> attribute is omitted for above cases, the user agent MAY assign a default probability value based on own heuristics, past navigation data, and other signals.</p>
 
-      <p>A hint probability of 1.0 does not guarantee that the hint will be executed by the user agent. Resource hints MAY be processed on a best effort basis by the user agent, and decision to process the hint MAY be based on the runtime context of the user agent &mdash; availability of CPU, GPU, memory, and networking resources &mdash; developer specified probability indicating the likelihood of that resource being used, specified user preferences, and other variables. The user agent MAY decide to:</p>
+      <p>A hint probability of `1.0` does not guarantee that the hint will be executed by the user agent. Specified hints MAY be processed on a best effort basis by the user agent, and decision to process the hint MAY be based on the runtime context of the user agent &mdash; availability of CPU, GPU, memory, and networking resources &mdash; developer specified probability indicating the likelihood of that resource being used, specified user preferences, and other variables. The user agent MAY decide to:</p>
 
       <ul>
         <li>Execute some, none, or all of the optimizations implied by the resource hint, and may also invoke additional optimizations based on its own heuristics.</li>

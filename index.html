@@ -106,13 +106,13 @@
     <section>
       <h2>Prerender</h2>
 
-      <p>The <code><dfn>prerender</dfn></code> relationship is used to declare a resource that might be required by the next navigation, and that the user agent SHOULD fetch and execute, such that the user agent can deliver faster response and processing once the resource is requested in the future.</p>
+      <p>The <code><dfn>prerender</dfn></code> relationship is used to declare an HTML resource that might be required by the next navigation, and that the user agent SHOULD fetch and execute, such that the user agent can deliver faster response and processing once the resource is requested in the future.</p>
 
       <pre class="example highlight html">
   &lt;link rel="prerender" href="//example.com/next-page.html"&gt;
       </pre>
 
-      <p>The user agent MAY preprocess the HTML response by also fetching the necessary subresources and executing them (i.e. prerender the response). The decision for which prerendering steps are performed is deferred to the user agent. The user agent MAY:</p>
+      <p>The user agent MAY preprocess the HTML response by also fetching the necessary subresources and executing them (i.e. prerender the page). The decision for which prerendering steps are performed is deferred to the user agent. The user agent MAY:</p>
 
       <ul>
         <li>Allocate fewer CPU, GPU, or memory resources to prerendered content.</li>
@@ -127,7 +127,9 @@
         <li>The above processing strategies are not an exhaustive list. The user agent may implement other strategies.</li>
       </ul>
 
-      <p>The user agent MAY perform appropriate preprocessing on the fetched response - e.g. preparse HTML, CSS, or JavaScript responses, decode an image ahead of time, and so on, but it MUST NOT automatically execute or apply it against the current page context.</p>
+      <div class="note">
+        The <a>prerender</a> hint can be used by the application to indicate the next likely HTML navigation target: the user agent will fetch and process the specified resource as an HTML response. To fetch other content-types with appropriate request headers, or if HTML preprocessing is not desired, the application can use the <a>prefetch</a> hint.
+      </div>
 
       <div class="note">
         To ensure compatibility and improve the success rate of prerendering requests the target page can use the [[PAGE-VISIBILITY]] to determine the visibility state of the page as it is being rendered and implement appropriate logic to avoid actions that may cause the prerender to be abandoned (e.g. non-idempotent requests), or unwanted side-effects from being triggered (e.g. analytics beacons firing prior to the page being displayed).

@@ -22,7 +22,6 @@
     wgURI: "http://www.w3.org/2010/webperf/",
     wgPublicList: "public-web-perf",
     format: "markdown",
-    noLegacyStyle: true,
     otherLinks: [{
       key: 'Repository',
       data: [{
@@ -150,7 +149,7 @@
     <h2>Process</h2>
 
     <section>
-      <h2>Hint probability</h2>
+      <h2>Hint probability ("pr") attribute</h2>
 
       <p>In addition to specifying the hint type, the application MAY indicate the expected probability that the specified resource hint will be used.</p>
 
@@ -184,6 +183,14 @@
       <div class="note">
         <p>To optimize the overall user experience the user agent should account for local context and specified probability of a speculative hint. For example, on a resource constrained device the user agent may decide to only execute high probability hints. Alternatively, it may decide to perform partial processing of the hint, such as downgrading <a>speculative fetch</a> to a <a>preconnect</a>, performing partial preprocessing, and so on. Performing a partial optimization allows the user agent to improve performance even if a full optimization cannot be performed. Conversely, on a device with sufficient resources, the user agent may execute all of the specified hints as far as possible.</p>
       </div>
+
+      <section>
+        <h2>Link element interface extensions</h2>
+        <dl title='partial interface HTMLLinkElement' class="idl">
+          <dt>attribute DOMString pr</dt>
+          <dd>The value of this element's <a>pr</a> attribute. The value of the attribute MUST be a float in the [0.0-1.0] range. Invalid values MUST be ignored by the user agent.</dd>
+        </dl>
+      </section>
     </section>
 
     <section>

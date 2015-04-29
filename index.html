@@ -43,7 +43,7 @@
 
 <body>
   <section id='abstract'>
-    <p>This specification defines the <a>preconnect</a> relationship and extends the <a>preload</a> relationship of the HTML Link Element (`<link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch to improve page performance.</p>
+    <p>This specification defines the <a>preconnect</a>, <a>prefetch</a>, and <a>prerender</a> relationships of the HTML Link Element (`<link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch and preprocess to improve page performance.</p>
   </section>
 
   <section id='sotd'>
@@ -53,7 +53,7 @@
   <section>
     <h2>Introduction</h2>
 
-    <p>Modern browsers leverage a wide variety of speculative optimization techniques to anticipate user input and intent, which allows them to hide some of the networking, processing, and rendering latencies: preconnects, early fetching of resources, and preloading and processing of resources for subsequent navigation.</p>
+    <p>Modern browsers leverage a wide variety of speculative optimization techniques to anticipate user input and intent, which allows them to hide some of the networking, processing, and rendering latencies: preconnects, prefetching of resources, and prerendering of resources for subsequent navigation.</p>
 
     <p>The decision to initiate one or more of the above optimizations is typically based on heuristic rules based on document markup and structure, navigation history, and context of the user - e.g., type of device, available compute and memory resources, network connectivity, user preferences, and so on. These techniques have proven to be successful, but can be further improved by leveraging the knowledge a developer has about the front-end and back-end generation and delivery of the resources of a web application.</p>
 
@@ -66,11 +66,16 @@
 
     <p>Many web applications already leverage a variety of prefetching techniques. This includes, but is not limited to, using `XMLHttpRequest` to fetch and cache assets before they are needed. However, these implementations are application specific, are not interoperable, and do not provide the same level of performance as the browser-provided primitives. Worse, these implementations sometimes conflict with the browser logic and result in delayed or unnecessary resource fetches that degrade overall page performance.</p>
 
-    <p>This specification defines the <a>preconnect</a> relationship and extends the <a>preload</a> relationship of the HTML Link Element (`<link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch to improve page performance.</p>
+    <p>This specification defines the <a>preconnect</a>, <a>prefetch</a>, and <a>prerender</a> relationships of the HTML Link Element (`<link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch and preprocess to improve page performance.</p>
   </section>
 
   <section>
     <h2>Resource Hints</h2>
+
+    <ul>
+      <li>A <dfn>resource hint link</dfn> is a <a>preconnect</a>, <a>prefetch</a>, or <a>prerender</a> relationship that is used to indicate an origin or resource that should be connected to, or fetched, by the user agent.</li>
+      <li>A <dfn>speculative fetch</dfn> is a fetch initiated via a <a>prefetch</a> or <a>prerender</a> relationship.</li>
+    </ul>
 
     <section>
       <h2>Preconnect</h2>
@@ -88,84 +93,56 @@
     </section>
 
     <section>
-      <h2>Preload</h2>
+      <h2>Prefetch</h2>
 
-      <p>The <code><dfn>preload</dfn></code> relationship is used to declare a resource and its fetch properties. This specification extends its functionality with additional processing policies that enable efficient fetching of resources that might be required by the next navigation, such that the user agent can deliver a faster response once the resource is requested.</p>
+      <p>The <code><dfn>prefetch</dfn></code> relationship is used to declare a resource that might be required by the next navigation, and that the user agent SHOULD fetch, such that the user agent can deliver a faster response once the resource is requested in the future.</p>
 
       <pre class="example highlight html">
-  &lt;!-- fetch and preprocess for next navigation -->
-  &lt;link rel="preload" href="//example.com/next-page.html" as="html" loadpolicy="next"&gt;
-
-  &lt;!-- fetch and do not preprocess for next navigation --&gt;
-  &lt;link rel="preload" href="//example.com/next-component.html" as="html" loadpolicy="next inert"&gt;
+  &lt;link rel="prefetch" href="//example.com/next-page.html" as="html"&gt;
+  &lt;link rel="prefetch" href="/library.js" as="script"&gt;
       </pre>
 
+      <ul>
+        <li>The user agent SHOULD NOT apply preprocessing on the response and MUST NOT automatically execute or apply it against the current page context.</li>
+        <li>The `as` attribute is an OPTIONAL attribute that must conform to requirements defined in [[PRELOAD]].</li>
+      </ul>
+
       <div class="note">
-        The `"next inert"` <a>loadpolicy</a> is equivalent to `rel=prefetch` implemented by some browsers; `"next"` <a>loadpolicy</a> is semantically equivalent to `rel=prerender` implemented by some browsers. This specification standardizes and extends previous prefetch and prerender functionality with additional capabilities.
+        The `as` attribute can be used by the application to communicate the resource destination context, such that the user agent can optimize the fetching process - e.g. set appropriate request headers, transport priority, and so on.
+      </div>
+    </section>
+
+    <section>
+      <h2>Prerender</h2>
+
+      <p>The <code><dfn>prerender</dfn></code> relationship is used to declare an HTML resource that might be required by the next navigation, and that the user agent SHOULD fetch and execute, such that the user agent can deliver faster response and processing once the resource is requested in the future.</p>
+
+      <pre class="example highlight html">
+  &lt;link rel="prerender" href="//example.com/next-page.html"&gt;
+      </pre>
+
+      <p>The user agent MAY preprocess the HTML response by also fetching the necessary subresources and executing them (i.e. prerender the page). The decision for which prerendering steps are performed is deferred to the user agent. The user agent MAY:</p>
+
+      <ul>
+        <li>Allocate fewer CPU, GPU, or memory resources to prerendered content.</li>
+        <li>Delay some requests until the requested HTML resource is made visible - e.g. media downloads, plugin content, and so on.</li>
+        <li>Prevent prerendering from being initiated when there are limited resources available.</li>
+        <li>Abandon prerendering due to high cost or resource requirements - e.g. high CPU or memory usage, expensive data access, and so on.</li>
+        <li>Abandon prerendering due to the type or properties of the fetched content:</li>
+        <ul>
+          <li>If the target exhibits non-idempotent behavior: mutations to shared local storage, `XMLHttpRequest` with a verb other than GET, HEAD, or OPTION, and so on.</li>
+          <li>If the target triggers a condition that requires user input: confirmation dialogs, authentication prompts, alerts, and so on.</li>
+        </ul>
+        <li>The above processing strategies are not an exhaustive list. The user agent may implement other strategies.</li>
+      </ul>
+
+      <div class="note">
+        The <a>prerender</a> hint can be used by the application to indicate the next likely HTML navigation target: the user agent will fetch and process the specified resource as an HTML response. To fetch other content-types with appropriate request headers, or if HTML preprocessing is not desired, the application can use the <a>prefetch</a> hint.
       </div>
 
-      <section>
-        <h2>`next` load and processing policy</h2>
-
-        <p>This specification extends the <code><dfn>loadpolicy</dfn></code> of <code><a>preload</a></code> relation, which consists of a space-separated set of keywords. These keywords determine the load and processing policy of the specified resource:</p>
-
-        <pre class="example highlight html">
-  &lt;link rel="preload" href="/assets/font.woff" as="font" loadpolicy="next"&gt;
-  &lt;link rel="preload" href="/assets/logo.webp" as="image" loadpolicy="next inert"&gt;
-        </pre>
-
-        <dl>
-          <dt><dfn>next</dfn></dt>
-          <dd>
-            Indicates that the specified resource may be required by the next navigation context (i.e. <dfn>speculative preload</dfn>), and that the user agent SHOULD fetch the resource if possible.
-
-            <p>Resource fetches that may be required for the next navigation can negatively impact the performance of the current navigation context due to additional contention for the CPU, GPU, memory, and network resources. To address this, the user agent SHOULD implement logic to reduce and eliminate such contention:</p>
-
-            <ul>
-              <li>Resource fetches required for the next navigation SHOULD have lower relative priority and SHOULD NOT block or interfere with resource fetches required by the current navigation context.</li>
-
-              <li>The optimal time to initiate a resource fetch required for the next navigation is dependent on the negotiated transport protocol, users current connectivity profile, available device resources, and other context specific variables. The user agent is left to determine the optimal time at which to initiate the fetch - e.g. the user agent MAY decide to wait until all other downloads are finished, or MAY choose to pipeline requests with low priority if the negotiated protocol supports the necessary primitives. Alternatively, the user agent MAY opt-out from initiating the fetch due to resource constraints, user preferences, or other factors.</li>
-            </ul>
-
-            <p><a>Speculative preload</a> hints may be combined with other <a>preload</a> policies:</p>
-
-            <ul>
-              <li>For HTML responses marked with the `next` policy:
-              <ul>
-                <li>If `inert` policy is omitted, the user agent MAY preprocess the HTML response by also fetching the necessary subresources and executing them (i.e. <dfn>prerender</dfn> the response). The decision for which prerendering steps are performed is deferred to the user agent. The user agent MAY:
-
-                <ul>
-                  <li>Allocate fewer CPU, GPU, or memory resources to prerendered content.</li>
-                  <li>Delay some requests until the requested HTML resource is made visible - e.g. media downloads, plugin content, and so on.</li>
-                  <li>Prevent prerendering from being initiated when there are limited resources available.</li>
-                  <li>Abandon prerendering due to high resource requirements - e.g. exceeded memory requirements, high CPU usage, and so on.</li>
-                  <li>Abandon prerendering due to the type or properties of the preloaded content:
-                  <ul>
-                    <li>If the target exhibits non-idempotent behavior: mutations to shared local storage, `XMLHttpRequest` with a verb other than GET, HEAD, or OPTION, and so on.</li>
-                    <li>If the target triggers a condition that requires user input: confirmation dialogs, authentication prompts, alerts, and so on.</li>
-                  </ul>
-                  </li>
-                </ul>
-                </li>
-                <li>If `inert` policy is present the user agent MUST NOT <a>prerender</a> the response.</li>
-              </ul>
-              </li>
-              <li>For all other content-types with the `next` policy:
-              <ul>
-                <li>If `inert` policy is omitted, the user agent MAY perform appropriate preprocessing on the fetched response - e.g. preparse HTML, CSS, or JavaScript responses, decode an image ahead of time, and so on, but it MUST NOT automatically execute or apply it against the current page context.</li>
-                <li>If `inert` policy is present, the user agent SHOULD NOT apply any preprocessing on the response and MUST NOT automatically execute or apply it against the current page context.</li>
-              </ul>
-              </li>
-            </ul>
-
-            <p>The above processing strategies are not an exhaustive list. The user agent MAY implement other and additional strategies.</p>
-
-            <div class="note">
-              <p>To ensure compatibility and improve the success rate of prerendering requests the target page can use the [[PAGE-VISIBILITY]] to determine the visibility state of the page as it is being rendered and implement appropriate logic to avoid actions that may cause the preload to be abandoned (e.g. non-idempotent requests), or unwanted side-effects from being triggered (e.g. analytics beacons firing prior to the page being displayed).</p>
-            </div>
-          </dd>
-        </dl>
-      </section>
+      <div class="note">
+        To ensure compatibility and improve the success rate of prerendering requests the target page can use the [[PAGE-VISIBILITY]] to determine the visibility state of the page as it is being rendered and implement appropriate logic to avoid actions that may cause the prerender to be abandoned (e.g. non-idempotent requests), or unwanted side-effects from being triggered (e.g. analytics beacons firing prior to the page being displayed).
+      </div>
     </section>
   </section>
 
@@ -175,68 +152,60 @@
     <section>
       <h2>Hint probability</h2>
 
-      <p>In addition to specifying the hint type, its fetch parameters, and the resource URL, the developer can communicate the expected probability that the specified resource hint will be used.</p>
+      <p>In addition to specifying the hint type, the application MAY indicate the expected probability that the specified resource hint will be used.</p>
 
       <pre class="highlight example html">
   &lt;link rel="preconnect" href="//cdn.example.com" pr="0.42"&gt;
-  &lt;link rel="preload" href="//example.com/next-page.html" pr="0.75" loadpolicy="next"&gt;
-  &lt;link rel="preload" href="//example.com/thankyou.html" pr="0.25" loadpolicy="next"&gt;
+  &lt;link rel="prefetch" href="//example.com/next-page.html" pr="0.75"&gt;
+  &lt;link rel="prerender" href="//example.com/thankyou.html" pr="0.25"&gt;
       </pre>
 
       <p>The <code><dfn>pr</dfn></code> attribute is a float value in the [0.0-1.0] range that MAY be used in the following cases:</p>
 
       <ul>
         <li>With a <code><a>preconnect</a></code> relation to indicate probability of initiating a fetch against the specified origin, either within the current navigation context, or within the next navigation context.</li>
-        <li>With a <code><a>speculative preload</a></code> relation to indicate probability of using the specified resource within the next navigation context.
+        <li>With a <code><a>speculative fetch</a></code> relation to indicate probability of using the specified resource within the next navigation context.</li>
       </ul>
 
-      <p>If the <code><a>pr</a></code> attribute is omitted for above cases, the user agent MAY assign a default probability value based on own heuristics, past navigation data, and so on.</p>
+      <p>If the <code><a>pr</a></code> attribute is omitted for above cases, the user agent MAY assign a default probability value based on own heuristics, past navigation data, and other signals.</p>
 
-      <p>A hint probability of 1.0 does not guarantee that the hint will be executed by the user agent. Resource hints MAY be processed on a best effort basis by the user agent, and decision to process the hint MAY be based on the runtime context of the user agent &mdash; availability of CPU, GPU, memory, and networking resources &mdash; developer specified probability indicating the likelihood of that resource being used, specified user preferences, and other variables. The user agent MAY decide to:</p>
+      <p>A hint probability of `1.0` does not guarantee that the hint will be executed by the user agent. Specified hints MAY be processed on a best effort basis by the user agent, and decision to process the hint MAY be based on the runtime context of the user agent &mdash; availability of CPU, GPU, memory, and networking resources &mdash; developer specified probability indicating the likelihood of that resource being used, specified user preferences, and other variables. The user agent MAY decide to:</p>
 
       <ul>
         <li>Execute some, none, or all of the optimizations implied by the resource hint, and may also invoke additional optimizations based on its own heuristics.</li>
         <li>Execute a partial optimization relative to the specified hint due to resource constraints or other reasons.
         <ul>
           <li><code><a>preconnect</a></code> MAY fallback to a partial handshake (DNS only, or DNS+TCP for HTTPS origins).</li>
-          <li><code><a>speculative preload</a></code> MAY fallback to <code><a>preconnect</a></code> for specified origin, or apply a custom preprocessing strategy for the target resource, and if applicable, its sub-resources: <code><a>preconnect</a></code> only; fetch the target resource but defer fetch of sub-resources; fetch sub-resources but delay their processing, and so on.</li>
+          <li><code><a>speculative fetch</a></code> MAY fallback to <code><a>preconnect</a></code> for specified origin, or apply a custom preprocessing strategy for the target resource, and if applicable, its sub-resources: <code><a>preconnect</a></code> only; fetch the target resource but defer fetch of sub-resources; fetch sub-resources but delay their processing, and so on.</li>
         </ul>
         </li>
       </ul>
 
       <div class="note">
-        <p>To optimize the overall user experience the user agent should account for local context and specified probability of a speculative hint. For example, on a resource constrained device the user agent may decide to only execute high probability hints. Alternatively, it may decide to perform partial processing of the hint, such as downgrading <a>speculative preload</a> to a <a>preconnect</a>, performing partial preprocessing, and so on. Performing a partial optimization allows the user agent to improve performance even if a full optimization cannot be performed. Conversely, on a device with sufficient resources, the user agent may execute all of the specified hints as far as possible.</p>
+        <p>To optimize the overall user experience the user agent should account for local context and specified probability of a speculative hint. For example, on a resource constrained device the user agent may decide to only execute high probability hints. Alternatively, it may decide to perform partial processing of the hint, such as downgrading <a>speculative fetch</a> to a <a>preconnect</a>, performing partial preprocessing, and so on. Performing a partial optimization allows the user agent to improve performance even if a full optimization cannot be performed. Conversely, on a device with sufficient resources, the user agent may execute all of the specified hints as far as possible.</p>
       </div>
     </section>
 
     <section>
-      <h2>Load and error events</h2>
-
-      <p>The user agent MUST NOT <a href="https://html.spec.whatwg.org/#delay-the-load-event">delay the `load` event</a> of the document due to outstanding <code><a>preconnect</a></code> or <code><a>speculative preload</a></code> initiated requests.</p>
-
-      <p>The decision on whether a resource hint is executed, and if so, whether full or partial processing is applied is deferred to the user agent. As a result, element-level `load` and `error` JavaScripts events are not guaranteed to fire, and if they do, do not guarantee that full processing was applied. However, the user agent SHOULD fire the appropriate `load` and `error` events when possible, to allow the application to track which hints were executed and when.</p>
-    </section>
-
-    <section>
       <h2>Fetching the resource hint link</h2>
-      <p>A <dfn>resource hint link</dfn> is a <a>preconnect</a> or <a>preload</a> relationship that is used to indicate an origin or resource that should be connected to, or fetched, by the user agent. The <a>resource hint link</a>'s may be specified in the document markup, MAY be provided via the HTTP `Link` header, and MAY be dynamically added to and removed from the document.</p>
+      <p>The <a>resource hint link</a>'s may be specified in the document markup, MAY be provided via the HTTP `Link` header, and MAY be dynamically added to and removed from the document.</p>
 
       <pre class="example">
   Link: &lt;https://example.com&gt;; rel=preconnect
-  Link: &lt;https://example.com/next-page.html&gt;; rel=preload; as=html; loadpolicy=next inert;
-  Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=preload; as=image; media=min-resolution:2dppx; loadpolicy=next
+  Link: &lt;https://example.com/next-page.html&gt;; rel=prerender;
+  Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=prefetch; as=image;
       </pre>
 
       <pre class="example highlight js">
   &lt;link rel="preconnect" href="//cdn.example.com" pr="0.42"&gt;
-  &lt;link rel="preload" href="//example.com/next-page.html" pr="0.75" loadpolicy="next"&gt;
+  &lt;link rel="prerender" href="//example.com/next-page.html" pr="0.75"&gt;
+  &lt;link rel="prefetch" href="//example.com/logo-hires.jpg" as="image"&gt;
       </pre>
 
       <pre class="example highlight js">
   var hint = document.createElement("link");
-  hint.rel = "preload";
+  hint.rel = "prefetch";
   hint.as = "html"
-  hint.loadpolicy = "next";
   hint.href = "/article/part3.html";
   document.head.appendChild(hint);
       </pre>
@@ -251,14 +220,30 @@
         </li>
       </ul>
 
-      <p>The user agent MAY delay the fetch of <a>speculative preload</a> to minimize resource contention for the current navigation context.</p>
+      <p>The user agent MAY delay the fetch of <a>speculative fetch</a> to minimize resource contention for the current navigation context.</p>
 
-      <p>The decision to cancel a <code><a>preconnect</a></code> or <code><a>speculative preload</a></code> fetch is deferred to the user agent, which MAY use local context and other signals to determine if and when the optimization should be aborted:<p>
+      <p>The decision to cancel a <code><a>preconnect</a></code> or <code><a>speculative fetch</a></code> is deferred to the user agent, which MAY use local context and other signals to determine if and when the optimization should be aborted:<p>
 
       <ul>
         <li>The user agent SHOULD abort the request if the `href` attribute on the `link` element of an <a>resource hint link</a> is removed, or its value is set to an empty string.</li>
-        <li>The user agent SHOULD allow the requests initiated via the <a>resource hint link</a> to continue across navigations. However, the user agent MAY cancel these requests once it determines that they are not required by the new destination - see <a href="#reactive-resource-prefetching-preload"></a>.</li>
+        <li>The user agent SHOULD allow the requests initiated via the <a>resource hint link</a> to continue across navigations. However, the user agent MAY cancel these requests once it determines that they are not required by the new destination - see <a href="#reactive-resource-prefetching-prefetch"></a>.</p></li>
       </ul>
+
+      <p>Resource fetches that may be required for the next navigation can negatively impact the performance of the current navigation context due to additional contention for the CPU, GPU, memory, and network resources. To address this, the user agent SHOULD implement logic to reduce and eliminate such contention:</p>
+
+      <ul>
+        <li>Resource fetches required for the next navigation SHOULD have lower relative priority and SHOULD NOT block or interfere with resource fetches required by the current navigation context.</li>
+
+        <li>The optimal time to initiate a resource fetch required for the next navigation is dependent on the negotiated transport protocol, users current connectivity profile, available device resources, and other context specific variables. The user agent is left to determine the optimal time at which to initiate the fetch - e.g. the user agent MAY decide to wait until all other downloads are finished, or MAY choose to pipeline requests with low priority if the negotiated protocol supports the necessary primitives. Alternatively, the user agent MAY opt-out from initiating the fetch due to resource constraints, user preferences, or other factors.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Load and error events</h2>
+
+      <p>The user agent MUST NOT <a href="https://html.spec.whatwg.org/#delay-the-load-event">delay the `load` event</a> of the document due to outstanding <code><a>preconnect</a></code> or <code><a>speculative fetch</a></code> initiated requests.</p>
+
+      <p>The decision on whether a resource hint is executed, and if so, whether full or partial processing is applied is deferred to the user agent. As a result, element-level `load` and `error` JavaScripts events are not guaranteed to fire, and if they do, do not guarantee that full processing was applied. However, the user agent SHOULD fire the appropriate `load` and `error` events when possible, to allow the application to track which hints were executed and when.</p>
     </section>
   </section>
 
@@ -276,28 +261,28 @@
     </section>
 
     <section>
-      <h2>Speculative resource prefetching (preload)</h2>
-      <p>The <a title="preload">preload hint</a> can be used to implement a prefetch strategy that leverages app-specific knowledge about the next navigation based on content, structure, analytics, or other signals - e.g. high-likelihood search results, paginated content or step-driven flows, aggregated analytics or per-user behavior, and so on.</p>
+      <h2>Speculative resource prefetching (prefetch)</h2>
+      <p>The <a>prefetch</a> hint can be used to implement a prefetch strategy that leverages app-specific knowledge about the next navigation based on content, structure, analytics, or other signals - e.g. high-likelihood search results, paginated content or step-driven flows, aggregated analytics or per-user behavior, and so on.</p>
 
       <p>For example, an image gallery may have knowledge about the likelihood of the next photo or page that may be requested by the user. To provide an improved experience the application can ask the user agent to begin fetching required resources (individual photos, critical resources, or the full page) before the next navigation is triggered.</p>
 
-      <p>To achieve the above behavior the application can specify one or more <code><a>preload</a></code> relations, set their <code><a>loadpolicy</a></code> to <code><a>next</a></code> to indicate that the resources are intended for next navigation, and optionally specify the probability (via <code><a>pr</a></code> attribute) of each resource being used.</p>
+      <p>To achieve the above behavior the application can specify one or more <a>prefetch</a> relations and optionally specify the probability (via <a>pr</a> attribute) of each resource being used.</p>
     </section>
 
     <section>
-      <h2>Reactive resource prefetching (preload)</h2>
-      <p>The <a title="preload">preload hint</a> can be used to implement a "reactive prefetch strategy" that leverages the knowledge of where the user is heading next and enables the application to begin prefetching critical resources in parallel with the navigation request.</p>
+      <h2>Reactive resource prefetching (prefetch)</h2>
+      <p>The <a>prefetch</a> can be used to implement a "reactive prefetch strategy" that leverages the knowledge of where the user is heading next and enables the application to begin prefetching critical resources in parallel with the navigation request.</p>
 
-      <p>To achieve the above behavior the application can listen for click, or other user and application generated events, and dynamically insert relevant <code><a>speculative preload</a></code> relations for critical resources required by the next navigation. In turn, the user agent can fetch the hinted resources in parallel with the navigation request, making the critical resources available sooner.</p>
+      <p>To achieve the above behavior the application can listen for click, or other user and application generated events, and dynamically insert relevant <a>prefetch</a> relations for critical resources required by the next navigation. In turn, the user agent can fetch the hinted resources in parallel with the navigation request, making the critical resources available sooner.</p>
 
-      <p>The enabling feature of this strategy is that requests initiated via <code><a>speculative preload</a></code> relation may be allowed to persist across navigations.</p>
+      <p>The enabling feature of this strategy is that requests initiated via <a>prefetch</a> relation may be allowed to persist across navigations.</p>
     </section>
 
     <section>
-      <h2>Prerendering (preload)</h2>
-      <p>The <a title="preload">preload hint</a> can be used to prerender the destination page, enabling an instant navigation experience once the user triggers the navigation.</p>
+      <h2>Prerendering (prerender)</h2>
+      <p>The <a>prerender</a> hint can be used to prerender the destination page, enabling an instant navigation experience once the user triggers the navigation.</p>
 
-      <p>To deliver an instant navigation experience the application can specify one or more <code><a>preload</a></code> relations, each of which points to a destination page (an HTML resource), and set their <code><a>loadpolicy</a></code> to <code><a>next</a></code> to indicate that the resources are intended for the next navigation. In turn, the user agent may fetch and process the HTML document, fetch its subresources, and perform other work to deliver an instant navigation - i.e. <a>prerender</a> the page. Alternatively, if the application wants to only prefetch the HTML response, it can set the <code><a>loadpolicy</a></code> to `next inert`, to indicate that the response should not be prerendered.</p>
+      <p>To deliver an instant navigation experience the application can specify one or more <a>prerender</a> relations, each of which points to a destination page (an HTML resource). In turn, the user agent may fetch and process the HTML document, fetch its subresources, and perform other work to deliver an instant navigation - i.e. "prerender" the page.</p>
 
       <p>Finally, because prerendering may require a lot of resources, the application can specify the probability (via <code><a>pr</a></code> attribute) of each target to help the user agent deliver the best user experience.</p>
     </section>

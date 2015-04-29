@@ -125,7 +125,7 @@
         <li>Allocate fewer CPU, GPU, or memory resources to prerendered content.</li>
         <li>Delay some requests until the requested HTML resource is made visible - e.g. media downloads, plugin content, and so on.</li>
         <li>Prevent prerendering from being initiated when there are limited resources available.</li>
-        <li>Abandon prendering due to high resource requirements - e.g. exceeded memory requirements, high CPU usage, and so on.</li>
+        <li>Abandon prerendering due to high cost or resource requirements - e.g. high CPU or memory usage, expensive data access, and so on.</li>
         <li>Abandon prerendering due to the type or properties of the fetched content:</li>
         <ul>
           <li>If the target exhibits non-idempotent behavior: mutations to shared local storage, `XMLHttpRequest` with a verb other than GET, HEAD, or OPTION, and so on.</li>

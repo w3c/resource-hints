@@ -245,6 +245,28 @@
   </section>
 
   <section>
+    <h2>Security and Privacy</h2>
+
+    <p>The use of <a href="#dfn-resource-hint-link">resource hints</a> hints can expose new information about both the current page and user's activity on it. For example, observing the content of prefetched or prerendered resources, or observing the DNS, IP, and hostname information exposed during connection establishment, both for secure and plain-text connections, can reveal information about the page initiating such requests, and where dynamic resource hints are used, user's activity on it.</p>
+
+    <p>To mitigate some of the above risks, the user agent MAY provide optional user setting to control the use of <a href="#dfn-resource-hint-link">resource hints</a>, and the user agent MUST:</p>
+
+    <ul>
+      <li>Treat <a>resource hint link</a>'s as <a href="https://w3c.github.io/webappsec/specs/mixedcontent/#category-optionally-blockable">Optionally-blockable Content</a>, as defined by [[MIXED-CONTENT]].</li>
+      <li>Enforce CSP policy restrictions for <a>resource hint link</a>'s, as defined by [[CSP2]].</li>
+      <li>Apply relevant the <a href="https://w3c.github.io/webappsec/specs/CSP2/#complications">Processing Complications recommendations</a> for optimistic resource fetching, as defined by [[CSP2]].</li>
+      <li>Apply relevant Referrer policy restrictions for <a>resource hint link</a>'s, as defined by [[REFERRER-POLICY]].</li>
+    </ul>
+
+    <p>Additionally, the site author SHOULD take necessary precautions to specify the relevant [[MIXED-CONTENT]], [[CSP]], and [[REFERRER-POLICY]] policies to allow the user agent to register and apply them prior to processing a <a>resource hint link</a>:</p>
+
+    <ul>
+      <li>If <a>resource hint link</a> is provided via HTML markup, then the relevant `<meta>` policies should be declared ahead of them - e.g. <a href="http://www.w3.org/TR/CSP2/#delivery-html-meta-element">see `<meta>` recommendations</a> for CSP.</li>
+      <li>If <a>resource hint link</a> is provided via the `Link` HTTP response header, then the relevant policies should also be delivered as an HTTP response header - e.g. see <a href="https://w3c.github.io/webappsec/specs/CSP2/#complications">Processing Complications</a> for CSP.</li>
+    </ul>
+  </section>
+
+  <section>
     <h2>Use cases</h2>
 
     <section>

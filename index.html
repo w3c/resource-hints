@@ -140,11 +140,12 @@
         <li>Delay some requests until the requested HTML resource is made visible - e.g. media downloads, plugin content, and so on.</li>
         <li>Prevent prerendering from being initiated when there are limited resources available.</li>
         <li>Abandon prerendering due to high cost or resource requirements - e.g. high CPU or memory usage, expensive data access, and so on.</li>
-        <li>Abandon prerendering due to the type or properties of the fetched content:</li>
+        <li>Abandon prerendering due to the type or properties of the fetched content:
         <ul>
           <li>If the target exhibits non-idempotent behavior: mutations to shared local storage, `XMLHttpRequest` with a verb other than GET, HEAD, or OPTION, and so on.</li>
           <li>If the target triggers a condition that requires user input: confirmation dialogs, authentication prompts, alerts, and so on.</li>
         </ul>
+        </li>
         <li>The above processing strategies are not an exhaustive list. The user agent may implement other strategies.</li>
       </ul>
 

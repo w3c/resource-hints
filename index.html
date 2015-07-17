@@ -42,7 +42,7 @@
 
 <body>
   <section id='abstract'>
-    <p>This specification defines the <a>preconnect</a>, <a>prefetch</a>, and <a>prerender</a> relationships of the HTML Link Element (`<link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch and preprocess to improve page performance.</p>
+    <p>This specification defines the <a>dns-prefetch</a>, <a>preconnect</a>, <a>prefetch</a>, and <a>prerender</a> relationships of the HTML Link Element (`<link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch and preprocess to improve page performance.</p>
   </section>
 
   <section id='sotd'>
@@ -65,16 +65,26 @@
 
     <p>Many web applications already leverage a variety of prefetching techniques. This includes, but is not limited to, using `XMLHttpRequest` to fetch and cache assets before they are needed. However, these implementations are application specific, are not interoperable, and do not provide the same level of performance as the browser-provided primitives. Worse, these implementations sometimes conflict with the browser logic and result in delayed or unnecessary resource fetches that degrade overall page performance.</p>
 
-    <p>This specification defines the <a>preconnect</a>, <a>prefetch</a>, and <a>prerender</a> relationships of the HTML Link Element (`<link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch and preprocess to improve page performance.</p>
+    <p>This specification defines the <a>dns-prefetch</a>, <a>preconnect</a>, <a>prefetch</a>, and <a>prerender</a> relationships of the HTML Link Element (`<link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch and preprocess to improve page performance.</p>
   </section>
 
   <section>
     <h2>Resource Hints</h2>
 
     <ul>
-      <li>A <dfn>resource hint link</dfn> is a <a>preconnect</a>, <a>prefetch</a>, or <a>prerender</a> relationship that is used to indicate an origin or resource that should be connected to, or fetched, by the user agent.</li>
+      <li>A <dfn>resource hint link</dfn> is a <a>dns-prefetch</a>, <a>preconnect</a>, <a>prefetch</a>, or <a>prerender</a> relationship that is used to indicate an origin or resource that should be connected to, or fetched, by the user agent.</li>
       <li>A <dfn>speculative fetch</dfn> is a fetch initiated via a <a>prefetch</a> or <a>prerender</a> relationship.</li>
     </ul>
+
+    <section>
+      <h2>DNS Prefetch</h2>
+
+      <p>The <code><dfn>dns-prefetch</dfn></code> relation is used to indicate an origin that will be used to fetch required resources, and that the user agent SHOULD resolve as early as possible.</p>
+
+      <pre class="example highlight html">
+  &lt;link rel="dns-prefetch" href="//example.com"&gt;
+      </pre>
+    </section>
 
     <section>
       <h2>Preconnect</h2>
@@ -157,6 +167,7 @@
       <p>In addition to specifying the hint type, the application MAY indicate the expected probability that the specified resource hint will be used.</p>
 
       <pre class="highlight example html">
+  &lt;link rel="dns-prefetch" href="//widget.com" pr="0.75"&gt;
   &lt;link rel="preconnect" href="//cdn.example.com" pr="0.42"&gt;
   &lt;link rel="prefetch" href="//example.com/next-page.html" pr="0.75"&gt;
   &lt;link rel="prerender" href="//example.com/thankyou.html" pr="0.25"&gt;
@@ -165,7 +176,7 @@
       <p>The <code><dfn>pr</dfn></code> attribute is a float value in the [0.0-1.0] range that MAY be used in the following cases:</p>
 
       <ul>
-        <li>With a <code><a>preconnect</a></code> relation to indicate probability of initiating a fetch against the specified origin, either within the current navigation context, or within the next navigation context.</li>
+        <li>With <code><a>dns-prefetch</a></code> and <code><a>preconnect</a></code> relations to indicate probability of initiating a fetch against the specified origin, either within the current navigation context, or within the next navigation context.</li>
         <li>With a <code><a>speculative fetch</a></code> relation to indicate probability of using the specified resource within the next navigation context.</li>
       </ul>
 
@@ -201,12 +212,14 @@
       <p>The <a>resource hint link</a>'s may be specified in the document markup, MAY be provided via the HTTP `Link` header, and MAY be dynamically added to and removed from the document.</p>
 
       <pre class="example">
+  Link: &lt;https://widget.com&gt;; rel=dns-prefetch
   Link: &lt;https://example.com&gt;; rel=preconnect
   Link: &lt;https://example.com/next-page.html&gt;; rel=prerender;
   Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=prefetch; as=image;
       </pre>
 
       <pre class="example highlight js">
+  &lt;link rel="dns-prefetch" href="//widget.com" pr="0.75"&gt;
   &lt;link rel="preconnect" href="//cdn.example.com" pr="0.42"&gt;
   &lt;link rel="prerender" href="//example.com/next-page.html" pr="0.75"&gt;
   &lt;link rel="prefetch" href="//example.com/logo-hires.jpg" as="image"&gt;

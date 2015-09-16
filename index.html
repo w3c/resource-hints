@@ -149,12 +149,14 @@
         <li>The above processing strategies are not an exhaustive list. The user agent may implement other strategies.</li>
       </ul>
 
+      <p>When prerendering a <a href="http://www.w3.org/TR/html5/dom.html#document">document</a> the user agent MUST set the <a href="http://www.w3.org/TR/html5/dom.html#document">document</a>'s <a href="http://w3c.github.io/page-visibility/#visibilitystate-attribute">visibilityState</a> ([[!PAGE-VISIBILITY]]) value to `prerender`.</p>
+
       <div class="note">
         The <a>prerender</a> hint can be used by the application to indicate the next likely HTML navigation target: the user agent will fetch and process the specified resource as an HTML response. To fetch other content-types with appropriate request headers, or if HTML preprocessing is not desired, the application can use the <a>prefetch</a> hint.
       </div>
 
       <div class="note">
-        To ensure compatibility and improve the success rate of prerendering requests the target page can use the [[PAGE-VISIBILITY]] to determine the visibility state of the page as it is being rendered and implement appropriate logic to avoid actions that may cause the prerender to be abandoned (e.g. non-idempotent requests), or unwanted side-effects from being triggered (e.g. analytics beacons firing prior to the page being displayed).
+        To ensure compatibility and improve the success rate of prerendering requests the target page can use the Page Visibility API to determine the visibility state of the page as it is being rendered and implement appropriate logic to avoid actions that may cause the prerender to be abandoned (e.g. non-idempotent requests), or unwanted side-effects from being triggered (e.g. analytics beacons firing prior to the page being displayed).
       </div>
     </section>
   </section>

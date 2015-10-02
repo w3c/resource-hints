@@ -98,7 +98,11 @@
 
       <p>To <dfn>initiate a preconnect</dfn>, the user agent MUST run these steps:</p>
       <ol>
-        <li><a href="https://html.spec.whatwg.org/#resolve-a-url">Resolve</a> the <a href="https://html.spec.whatwg.org/#url">URL</a> given by the `href` attribute. If that is successful, let <var>preconnect URL</var> be the <a href="https://html.spec.whatwg.org/#resulting-absolute-url">resulting absolute URL</a>, and otherwise abort these steps.</li>
+        <li><a href="https://html.spec.whatwg.org/#resolve-a-url">Resolve</a> the <a href="https://html.spec.whatwg.org/#url">URL</a> given by the `href` attribute.</li>
+        <ol>
+        <li>If that is successful, let <var>preconnect URL</var> be the <a href="https://html.spec.whatwg.org/#resulting-absolute-url">resulting absolute URL</a>, and otherwise abort these steps.</li>
+        <li>If <var>preconnect URL</var> <a href="https://url.spec.whatwg.org/#concept-url-scheme">scheme</a> is not one of "http" or "https" then abort these steps.</li>
+        </ol>
         <li>Let <var>origin</var> be the origin [[!ORIGIN]] of the <var>preconnect URL</var>.</li>
         <li>Let <var>corsAttributeState</var> be the current state of the element's <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#cors-settings-attributes">`crossorigin`</a> content attribute.</li>
         <li>Let <var>credentials</var> be a boolean value set to `true`.

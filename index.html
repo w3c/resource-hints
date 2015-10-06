@@ -96,11 +96,23 @@
   &lt;link rel="preconnect" href="//cdn.example.com" crossorigin&gt;
       </pre>
 
-      <ul>
-        <li>The `crossorigin` <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#cors-settings-attributes">CORS setting attribute</a> is an OPTIONAL attribute that indicates the CORS policy for resources that will be fetched from the specified origin - e.g. when set to "anonymous", the user agent SHOULD initiate a handshake for a connection that can be used to fetch resources with an equivalent policy.</li>
+      <p>To <dfn>initiate a preconnect</dfn>, the user agent MUST run these steps:</p>
+      <ol>
+        <li><a href="https://html.spec.whatwg.org/#resolve-a-url">Resolve</a> the <a href="https://html.spec.whatwg.org/#url">URL</a> given by the `href` attribute.</li>
+        <ol>
+        <li>If that is successful, let <var>preconnect URL</var> be the <a href="https://html.spec.whatwg.org/#resulting-absolute-url">resulting absolute URL</a>, and otherwise abort these steps.</li>
+        <li>If <var>preconnect URL</var>'s <a href="https://url.spec.whatwg.org/#concept-url-scheme">scheme</a> is not one of "http" or "https" then abort these steps.</li>
+        </ol>
+        <li>Let <var>origin</var> be <var>preconnect URL</var>'s <a href="https://url.spec.whatwg.org/#concept-url-origin">origin</a>.</li>
+        <li>Let <var>corsAttributeState</var> be the current state of the element's <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#cors-settings-attributes">`crossorigin`</a> content attribute.</li>
+        <li>Let <var>credentials</var> be a boolean value set to `true`.
+        <li>If <var>corsAttributeState</var> is `Anonymous` and <var>origin</var> is not equal to <a href="https://html.spec.whatwg.org/multipage/browsers.html#origin-2">current Document's origin</a>, set <var>credentials</var> to `false`.</li>
+        <li>Attempt to <a href="https://fetch.spec.whatwg.org/#concept-connection-obtain">obtain connection</a> with <var>origin</var> and <var>credentials</var>.</li>
+      </ol>
 
-        <li>The user agent SHOULD initiate the handshake as early as possible and perform the full connection handshake (DNS+TCP for HTTP, and DNS+TCP+TLS for HTTPS origins) whenever possible, but is allowed to elect to perform a partial handshake (DNS only for HTTP, and DNS or DNS+TCP for HTTPS origins), or skip it entirely, due to resource constraints or other reasons. The optimal number of connections per origin is dependent on the negotiated protocol, users current connectivity profile, available device resources, and other context specific variables. As a result, this decision is deferred to the user agent, which is in the best position to determine the optimal number of connections per origin.</li>
-      </ul>
+      <p>The user agent SHOULD attempt to <a>initiate a preconnect</a> and perform the full connection handshake (DNS+TCP for HTTP, and DNS+TCP+TLS for HTTPS origins) whenever possible, but is allowed to elect to perform a partial handshake (DNS only for HTTP, and DNS or DNS+TCP for HTTPS origins), or skip it entirely, due to resource constraints or other reasons.</p>
+
+      <p>The optimal number of connections per origin is dependent on the negotiated protocol, users current connectivity profile, available device resources, global connection limits, and other context specific variables. As a result, the decision for how many connections should be opened is deferred to the user agent.</p>
     </section>
 
     <section>

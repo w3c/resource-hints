@@ -79,7 +79,7 @@
     <section>
       <h2>DNS Prefetch</h2>
 
-      <p>The <code><dfn>dns-prefetch</dfn></code> relation is used to indicate an origin that will be used to fetch required resources, and that the user agent SHOULD resolve as early as possible.</p>
+      <p>The <code><dfn>dns-prefetch</dfn></code> link relation type is used to indicate an origin that will be used to fetch required resources, and that the user agent SHOULD resolve as early as possible.</p>
 
       <pre class="example highlight html">
   &lt;link rel="dns-prefetch" href="//example.com"&gt;
@@ -89,7 +89,7 @@
     <section>
       <h2>Preconnect</h2>
 
-      <p>The <code><dfn>preconnect</dfn></code> relation is used to indicate an origin that will be used to fetch required resources. Initiating an early connection, which includes the DNS lookup, TCP handshake, and optional TLS negotiation, allows the user agent to mask the high latency costs of establishing a connection.</p>
+      <p>The <code><dfn>preconnect</dfn></code> link relation type is used to indicate an origin that will be used to fetch required resources. Initiating an early connection, which includes the DNS lookup, TCP handshake, and optional TLS negotiation, allows the user agent to mask the high latency costs of establishing a connection.</p>
 
       <pre class="example highlight html">
   &lt;link rel="preconnect" href="//example.com"&gt;
@@ -119,7 +119,7 @@
     <section>
       <h2>Prefetch</h2>
 
-      <p>The <code><dfn>prefetch</dfn></code> relationship is used to declare a resource that might be required by the next navigation, and that the user agent SHOULD fetch, such that the user agent can deliver a faster response once the resource is requested in the future.</p>
+      <p>The <code><dfn>prefetch</dfn></code> link relation type is used to declare a resource that might be required by the next navigation, and that the user agent SHOULD fetch, such that the user agent can deliver a faster response once the resource is requested in the future.</p>
 
       <pre class="example highlight html">
   &lt;link rel="prefetch" href="//example.com/next-page.html" as="html" crossorigin="use-credentials"&gt;
@@ -140,7 +140,7 @@
     <section>
       <h2>Prerender</h2>
 
-      <p>The <code><dfn>prerender</dfn></code> relationship is used to declare an HTML resource that might be required by the next navigation, and that the user agent SHOULD fetch and execute, such that the user agent can deliver faster response and processing once the resource is requested in the future.</p>
+      <p>The <code><dfn>prerender</dfn></code> link relation type is used to declare an HTML resource that might be required by the next navigation, and that the user agent SHOULD fetch and execute, such that the user agent can deliver faster response and processing once the resource is requested in the future.</p>
 
       <pre class="example highlight html">
   &lt;link rel="prerender" href="//example.com/next-page.html"&gt;
@@ -364,7 +364,7 @@
         <dt>Relation Name:</dt>
         <dd>dns-prefetch</dd>
         <dt>Description:</dt>
-        <dd>The dns-prefetch relation is used to indicate an origin that will be used to fetch required resources, and that the user agent SHOULD resolve as early as possible.</dd>
+        <dd>The dns-prefetch link relation type is used to indicate an origin that will be used to fetch required resources, and that the user agent SHOULD resolve as early as possible.</dd>
         <dt>Reference:</dt>
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
@@ -376,7 +376,7 @@
         <dt>Relation Name:</dt>
         <dd>preconnect</dd>
         <dt>Description:</dt>
-        <dd>The preconnect relation is used to indicate an origin that will be used to fetch required resources. Initiating an early connection, which includes the DNS lookup, TCP handshake, and optional TLS negotiation, allows the user agent to mask the high latency costs of establishing a connection.</dd>
+        <dd>The preconnect link relation type is used to indicate an origin that will be used to fetch required resources. Initiating an early connection, which includes the DNS lookup, TCP handshake, and optional TLS negotiation, allows the user agent to mask the high latency costs of establishing a connection.</dd>
         <dt>Reference:</dt>
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
@@ -388,7 +388,7 @@
         <dt>Relation Name:</dt>
         <dd>prefetch</dd>
         <dt>Description:</dt>
-        <dd>The prefetch relationship is used to declare a resource that might be required by the next navigation, and that the user agent SHOULD fetch, such that the user agent can deliver a faster response once the resource is requested in the future.</dd>
+        <dd>The prefetch link relation type is used to declare a resource that might be required by the next navigation, and that the user agent SHOULD fetch, such that the user agent can deliver a faster response once the resource is requested in the future.</dd>
         <dt>Reference:</dt>
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
@@ -400,7 +400,7 @@
         <dt>Relation Name:</dt>
         <dd>prerender</dd>
         <dt>Description:</dt>
-        <dd>The prerender relationship is used to declare an HTML resource that might be required by the next navigation, and that the user agent SHOULD fetch and execute, such that the user agent can deliver faster response and processing once the resource is requested in the future.</dd>
+        <dd>The prerender link relation type is used to declare an HTML resource that might be required by the next navigation, and that the user agent SHOULD fetch and execute, such that the user agent can deliver faster response and processing once the resource is requested in the future.</dd>
         <dt>Reference:</dt>
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>

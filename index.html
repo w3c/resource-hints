@@ -140,7 +140,7 @@
     <section>
       <h2>Prerender</h2>
 
-      <p>Indicates a resource that might be required by the next navigation, and that user agents ought to fetch and execute to improve performance.</p>
+      <p>The <code><dfn>prerender</dfn></code> link relation type is used to declare a resource that might be required by the next navigation, and that the user agent SHOULD fetch and execute, such that the user agent can deliver a faster response once the resource is requested in the future.</p>
 
       <pre class="example highlight html">
   &lt;link rel="prerender" href="//example.com/next-page.html"&gt;
@@ -400,7 +400,7 @@
         <dt>Relation Name:</dt>
         <dd>prerender</dd>
         <dt>Description:</dt>
-        <dd>Indicates a resource that might be required by the next navigation, and that user agents ought to fetch and execute to improve performance.</dd>
+        <dd>The prerender link relation type is used to declare a resource that might be required by the next navigation, and that the user agent should fetch and execute, such that the user agent can deliver a faster response once the resource is requested in the future.</dd>
         <dt>Reference:</dt>
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>

@@ -86,7 +86,6 @@
   &lt;link rel="dns-prefetch" href="//example.com"&gt;
       </pre>
     </section>
-
     <section>
       <h2>Preconnect</h2>
 
@@ -116,7 +115,6 @@
 
       <p>The optimal number of connections per origin is dependent on the negotiated protocol, users current connectivity profile, available device resources, global connection limits, and other context specific variables. As a result, the decision for how many connections should be opened is deferred to the user agent.</p>
     </section>
-
     <section>
       <h2>Prefetch</h2>
 
@@ -137,7 +135,6 @@
         The `as` attribute can be used by the application to communicate the resource destination context, such that the user agent can optimize the fetching process - e.g. set appropriate request headers, transport priority, and so on.
       </div>
     </section>
-
     <section>
       <h2>Prerender</h2>
 
@@ -174,7 +171,6 @@
       </div>
     </section>
   </section>
-
   <section>
     <h2>Process</h2>
 
@@ -223,7 +219,6 @@
         </dl>
       </section>
     </section>
-
     <section>
       <h2>Fetching the resource hint link</h2>
       <p>The <a>resource hint link</a>'s may be specified in the document markup, MAY be provided via the HTTP `Link` header, and MAY be dynamically added to and removed from the document.</p>
@@ -277,7 +272,6 @@
         <li>The optimal time to initiate a resource fetch required for the next navigation is dependent on the negotiated transport protocol, users current connectivity profile, available device resources, and other context specific variables. The user agent is left to determine the optimal time at which to initiate the fetch - e.g. the user agent MAY decide to wait until all other downloads are finished, or MAY choose to pipeline requests with low priority if the negotiated protocol supports the necessary primitives. Alternatively, the user agent MAY opt-out from initiating the fetch due to resource constraints, user preferences, or other factors.</li>
       </ul>
     </section>
-
     <section>
       <h2>Load and error events</h2>
 
@@ -286,7 +280,6 @@
       <p>The decision on whether a resource hint is executed, and if so, whether full or partial processing is applied is deferred to the user agent. As a result, element-level `load` and `error` JavaScripts events are not guaranteed to fire, and if they do, do not guarantee that full processing was applied. However, the user agent SHOULD fire the appropriate `load` and `error` events when possible, to allow the application to track which hints were executed and when.</p>
     </section>
   </section>
-
   <section>
     <h2>Use cases</h2>
 
@@ -294,12 +287,10 @@
       <h2>Dynamic request URL (preconnect)</h2>
       <p>The full resource URL may not be known until the page is being constructed by the user agent - e.g. conditional loading logic, UA adaptation, etc. However, the origin from which one or more of these resources will be fetched is often known ahead of time by the developer or the server generating the response. In such cases, a <a title="preconnect">preconnect hint</a> can be used to initiate an early connection handshake such that when the resource URL is determined, the user agent can dispatch the request without first blocking on connection negotiation.</p>
     </section>
-
     <section>
       <h2>Anonymizing redirect (preconnect)</h2>
       <p>Many sites rely on redirect services for analytics, malware protection, and to <a href="https://www.facebook.com/notes/facebook-engineering/protecting-privacy-with-referrers/392382738919">anonymize the referrer</a> before sending the user to the final destination. Because the destination is known ahead of time, a <a title="preconnect">preconnect hint</a> can be used to initiate the connection handshake with the destination origin (without revealing any private information) in parallel with the processing of the redirect - this masks the redirect latency and reduces navigation time to final destination.</p>
     </section>
-
     <section>
       <h2>Speculative resource prefetching (prefetch)</h2>
       <p>The <a>prefetch</a> hint can be used to implement a prefetch strategy that leverages app-specific knowledge about the next navigation based on content, structure, analytics, or other signals - e.g. high-likelihood search results, paginated content or step-driven flows, aggregated analytics or per-user behavior, and so on.</p>
@@ -308,7 +299,6 @@
 
       <p>To achieve the above behavior the application can specify one or more <a>prefetch</a> relations and optionally specify the probability (via <a>pr</a> attribute) of each resource being used.</p>
     </section>
-
     <section>
       <h2>Reactive resource prefetching (prefetch)</h2>
       <p>The <a>prefetch</a> can be used to implement a "reactive prefetch strategy" that leverages the knowledge of where the user is heading next and enables the application to begin prefetching critical resources in parallel with the navigation request.</p>
@@ -317,7 +307,6 @@
 
       <p>The enabling feature of this strategy is that requests initiated via <a>prefetch</a> relation may be allowed to persist across navigations.</p>
     </section>
-
     <section>
       <h2>Prerendering (prerender)</h2>
       <p>The <a>prerender</a> hint can be used to prerender the destination page, enabling an instant navigation experience once the user triggers the navigation.</p>
@@ -327,7 +316,6 @@
       <p>Finally, because prerendering may require a lot of resources, the application can specify the probability (via <code><a>pr</a></code> attribute) of each target to help the user agent deliver the best user experience.</p>
     </section>
   </section>
-
   <section>
     <h2>Security and Privacy</h2>
 
@@ -350,15 +338,12 @@
       <li>If <a>resource hint link</a> is provided via the `Link` HTTP response header, then the relevant policies should also be delivered as an HTTP response header - e.g. see <a href="https://w3c.github.io/webappsec/specs/content-security-policy/#complications">Processing Complications</a> for CSP.</li>
     </ul>
   </section>
-
   <section id="conformance">
     <p>There is only one class of product that can claim conformance to this specification: a <dfn>user agent</dfn>.</p>
   </section>
-  
   <section>
     <h2>IANA Considerations</h2>
     <p>The link relation types below have been registered by IANA per Section 6.2.1 of [[!RFC5988]]:</p>
-    
     <section>
       <h3>dns-prefetch Link Relation Type</h3>
       <dl>
@@ -370,7 +355,6 @@
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
     </section>
-    
     <section>
       <h3>preconnect Link Relation Type</h3>
       <dl>
@@ -382,7 +366,6 @@
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
     </section>
-    
     <section>
       <h3>prefetch Link Relation Type</h3>
       <dl>
@@ -394,7 +377,6 @@
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
     </section>
-    
     <section>
       <h3>prerender Link Relation Type</h3>
       <dl>
@@ -406,13 +388,10 @@
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
     </section>
-    
   </section>
-
   <section class="appendix">
     <h2>Acknowledgments</h2>
     <p>This document reuses text from the [[!HTML]] specification, edited by Ian Hickson, as permitted by the license of that specification.</p>
   </section>
-
 </body>
 </html>

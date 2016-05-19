@@ -82,7 +82,7 @@
 
       <p>The <code><dfn>dns-prefetch</dfn></code> link relation type is used to indicate an origin that will be used to fetch required resources, and that the user agent SHOULD resolve as early as possible.</p>
 
-      <pre class="example highlight html">
+      <pre class="example html">
   &lt;link rel="dns-prefetch" href="//example.com"&gt;
       </pre>
     </section>
@@ -92,7 +92,7 @@
 
       <p>The <code><dfn>preconnect</dfn></code> link relation type is used to indicate an origin that will be used to fetch required resources. Initiating an early connection, which includes the DNS lookup, TCP handshake, and optional TLS negotiation, allows the user agent to mask the high latency costs of establishing a connection.</p>
 
-      <pre class="example highlight html">
+      <pre class="example html">
   &lt;link rel="preconnect" href="//example.com"&gt;
   &lt;link rel="preconnect" href="//cdn.example.com" crossorigin&gt;
       </pre>
@@ -122,7 +122,7 @@
 
       <p>The <code><dfn>prefetch</dfn></code> link relation type is used to identify a resource that might be required by the next navigation, and that the user agent SHOULD fetch, such that the user agent can deliver a faster response once the resource is requested in the future.</p>
 
-      <pre class="example highlight html">
+      <pre class="example html">
   &lt;link rel="prefetch" href="//example.com/next-page.html" as="html" crossorigin="use-credentials"&gt;
   &lt;link rel="prefetch" href="/library.js" as="script"&gt;
       </pre>
@@ -143,7 +143,7 @@
 
       <p>The <code><dfn>prerender</dfn></code> link relation type is used to identify a resource that might be required by the next navigation, and that the user agent SHOULD fetch and execute, such that the user agent can deliver a faster response once the resource is requested in the future.</p>
 
-      <pre class="example highlight html">
+      <pre class="example html">
   &lt;link rel="prerender" href="//example.com/next-page.html"&gt;
       </pre>
 
@@ -183,7 +183,7 @@
 
       <p>In addition to specifying the hint type, the application MAY indicate the expected probability that the specified resource hint will be used.</p>
 
-      <pre class="highlight example html">
+      <pre class="example html">
   &lt;link rel="dns-prefetch" href="//widget.com" pr="0.75"&gt;
   &lt;link rel="preconnect" href="//cdn.example.com" pr="0.42"&gt;
   &lt;link rel="prefetch" href="//example.com/next-page.html" pr="0.75"&gt;
@@ -228,21 +228,21 @@
       <h2>Fetching the resource hint link</h2>
       <p>The <a>resource hint link</a>'s may be specified in the document markup, MAY be provided via the HTTP `Link` header, and MAY be dynamically added to and removed from the document.</p>
 
-      <pre class="example">
+      <pre class="example nohighlight">
   Link: &lt;https://widget.com&gt;; rel=dns-prefetch
   Link: &lt;https://example.com&gt;; rel=preconnect
   Link: &lt;https://example.com/next-page.html&gt;; rel=prerender;
   Link: &lt;https://example.com/logo-hires.jpg&gt;; rel=prefetch; as=image;
       </pre>
 
-      <pre class="example highlight js">
+      <pre class="example js">
   &lt;link rel="dns-prefetch" href="//widget.com" pr="0.75"&gt;
   &lt;link rel="preconnect" href="//cdn.example.com" pr="0.42"&gt;
   &lt;link rel="prerender" href="//example.com/next-page.html" pr="0.75"&gt;
   &lt;link rel="prefetch" href="//example.com/logo-hires.jpg" as="image"&gt;
       </pre>
 
-      <pre class="example highlight js">
+      <pre class="example js">
   var hint = document.createElement("link");
   hint.rel = "prefetch";
   hint.as = "html";
@@ -354,11 +354,11 @@
   <section id="conformance">
     <p>There is only one class of product that can claim conformance to this specification: a <dfn>user agent</dfn>.</p>
   </section>
-  
+
   <section>
     <h2>IANA Considerations</h2>
     <p>The link relation types below have been registered by IANA per Section 6.2.1 of [[!RFC5988]]:</p>
-    
+
     <section>
       <h3>dns-prefetch Link Relation Type</h3>
       <dl>
@@ -370,7 +370,7 @@
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
     </section>
-    
+
     <section>
       <h3>preconnect Link Relation Type</h3>
       <dl>
@@ -382,7 +382,7 @@
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
     </section>
-    
+
     <section>
       <h3>prefetch Link Relation Type</h3>
       <dl>
@@ -394,7 +394,7 @@
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
     </section>
-    
+
     <section>
       <h3>prerender Link Relation Type</h3>
       <dl>
@@ -406,7 +406,7 @@
         <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
     </section>
-    
+
   </section>
 
   <section class="appendix">

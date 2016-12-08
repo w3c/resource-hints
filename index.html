@@ -216,12 +216,14 @@
         <p>To optimize the overall user experience the user agent should account for local context and specified probability of a speculative hint. For example, on a resource constrained device the user agent may decide to only execute high probability hints. Alternatively, it may decide to perform partial processing of the hint, such as downgrading <a>speculative fetch</a> to a <a>preconnect</a>, performing partial preprocessing, and so on. Performing a partial optimization allows the user agent to improve performance even if a full optimization cannot be performed. Conversely, on a device with sufficient resources, the user agent may execute all of the specified hints as far as possible.</p>
       </div>
 
-      <section>
+      <section data-dfn-for="HTMLLinkElement">
         <h2>Link element interface extensions</h2>
-        <dl title='partial interface HTMLLinkElement' class="idl">
-          <dt>attribute DOMString pr</dt>
-          <dd>The value of this element's <a>pr</a> attribute. The value of the attribute MUST be a float in the [0.0-1.0] range. Invalid values MUST be ignored by the user agent.</dd>
-        </dl>
+        <pre class="idl">
+        partial interface HTMLLinkElement {
+          attribute DOMString pr;
+        };
+        </pre>
+        <p>The value of this element's <dfn>pr</dfn> attribute. The value of the attribute MUST be a float in the [0.0-1.0] range. Invalid values MUST be ignored by the user agent.</p>
       </section>
     </section>
 
@@ -293,12 +295,12 @@
 
     <section>
       <h2>Dynamic request URL (preconnect)</h2>
-      <p>The full resource URL may not be known until the page is being constructed by the user agent - e.g. conditional loading logic, UA adaptation, etc. However, the origin from which one or more of these resources will be fetched is often known ahead of time by the developer or the server generating the response. In such cases, a <a title="preconnect">preconnect hint</a> can be used to initiate an early connection handshake such that when the resource URL is determined, the user agent can dispatch the request without first blocking on connection negotiation.</p>
+      <p>The full resource URL may not be known until the page is being constructed by the user agent - e.g. conditional loading logic, UA adaptation, etc. However, the origin from which one or more of these resources will be fetched is often known ahead of time by the developer or the server generating the response. In such cases, a <a data-lt="preconnect">preconnect hint</a> can be used to initiate an early connection handshake such that when the resource URL is determined, the user agent can dispatch the request without first blocking on connection negotiation.</p>
     </section>
 
     <section>
       <h2>Anonymizing redirect (preconnect)</h2>
-      <p>Many sites rely on redirect services for analytics, malware protection, and to <a href="https://www.facebook.com/notes/facebook-engineering/protecting-privacy-with-referrers/392382738919">anonymize the referrer</a> before sending the user to the final destination. Because the destination is known ahead of time, a <a title="preconnect">preconnect hint</a> can be used to initiate the connection handshake with the destination origin (without revealing any private information) in parallel with the processing of the redirect - this masks the redirect latency and reduces navigation time to final destination.</p>
+      <p>Many sites rely on redirect services for analytics, malware protection, and to <a href="https://www.facebook.com/notes/facebook-engineering/protecting-privacy-with-referrers/392382738919">anonymize the referrer</a> before sending the user to the final destination. Because the destination is known ahead of time, a <a data-lt="preconnect">preconnect hint</a> can be used to initiate the connection handshake with the destination origin (without revealing any private information) in parallel with the processing of the redirect - this masks the redirect latency and reduces navigation time to final destination.</p>
     </section>
 
     <section>

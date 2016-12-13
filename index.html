@@ -20,7 +20,7 @@
       w3cid: "56102"
     }, ],
     wg: "Web Performance Working Group",
-    wgURI: "http://www.w3.org/webperf/",
+    wgURI: "https://www.w3.org/webperf/",
     license: 'w3c-software-doc',
     wgPublicList: "public-web-perf",
     format: "markdown",
@@ -37,7 +37,7 @@
         href: 'https://github.com/w3c/resource-hints/commits/gh-pages/index.html'
       }]
     }],
-    wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/45211/status"
+    wgPatentURI:  "https://www.w3.org/2004/01/pp-impl/45211/status"
   };
   </script>
 </head>
@@ -164,7 +164,7 @@
         <li>The above processing strategies are not an exhaustive list. The user agent may implement other strategies.</li>
       </ul>
 
-      <p>When prerendering a <a href="http://www.w3.org/TR/html5/dom.html#document">document</a> the user agent MUST set the <a href="http://www.w3.org/TR/html5/dom.html#document">document</a>'s <a href="http://w3c.github.io/page-visibility/#visibilitystate-attribute">visibilityState</a> ([[!PAGE-VISIBILITY]]) value to `prerender`.</p>
+      <p>When prerendering a <a href="https://www.w3.org/TR/html5/dom.html#document">document</a> the user agent MUST set the <a href="https://www.w3.org/TR/html5/dom.html#document">document</a>'s <a href="http://w3c.github.io/page-visibility/#visibilitystate-attribute">visibilityState</a> ([[!PAGE-VISIBILITY]]) value to `prerender`.</p>
 
       <div class="note">
         The <a>prerender</a> hint can be used by the application to indicate the next likely HTML navigation target: the user agent will fetch and process the specified resource as an HTML response. To fetch other content-types with appropriate request headers, or if HTML preprocessing is not desired, the application can use the <a>prefetch</a> hint.
@@ -253,13 +253,13 @@
   document.head.appendChild(hint);
       </pre>
 
-      <p>The appropriate times to connect to a host, or <a href="http://www.w3.org/TR/html5/document-metadata.html#concept-link-obtain">obtain</a> the specified resource are:</p>
+      <p>The appropriate times to connect to a host, or <a href="https://www.w3.org/TR/html5/document-metadata.html#concept-link-obtain">obtain</a> the specified resource are:</p>
 
       <ul>
         <li>When the user agent that supports [[!RFC5988]] processes <a>resource hint link</a> specified via the <a href="http://tools.ietf.org/html/rfc5988">Link HTTP header</a>.</li>
-        <li>When the <a>resource hint link</a>'s `link` element is <a href="http://www.w3.org/TR/html5/infrastructure.html#insert-an-element-into-a-document">inserted into a document</a>.</li>
-        <li>When the <a>resource hint link</a> is created on a `link` element that is already <a href="http://www.w3.org/TR/html5/infrastructure.html#in-a-document">in a Document</a>.</li>
-        <li>When the `href` attribute of the `link` element of an <a>resource hint link</a> that is already <a href="http://www.w3.org/TR/html5/infrastructure.html#in-a-document">in a Document</a> is changed.
+        <li>When the <a>resource hint link</a>'s `link` element is <a href="https://www.w3.org/TR/html5/infrastructure.html#insert-an-element-into-a-document">inserted into a document</a>.</li>
+        <li>When the <a>resource hint link</a> is created on a `link` element that is already <a href="https://www.w3.org/TR/html5/infrastructure.html#in-a-document">in a Document</a>.</li>
+        <li>When the `href` attribute of the `link` element of an <a>resource hint link</a> that is already <a href="https://www.w3.org/TR/html5/infrastructure.html#in-a-document">in a Document</a> is changed.
         </li>
       </ul>
 
@@ -349,7 +349,7 @@
     <p>The site author SHOULD take necessary precautions to specify the relevant [[!MIXED-CONTENT]], [[!CSP3]], and [[!REFERRER-POLICY]] policies to allow the user agent to register and apply them prior to processing a <a>resource hint link</a>:</p>
 
     <ul>
-      <li>If <a>resource hint link</a> is provided via HTML markup, then the relevant `<meta>` policies SHOULD be declared ahead of them - e.g. <a href="http://www.w3.org/TR/CSP2/#delivery-html-meta-element">see `<meta>` recommendations</a> for CSP.</li>
+      <li>If <a>resource hint link</a> is provided via HTML markup, then the relevant `<meta>` policies SHOULD be declared ahead of them - e.g. <a href="https://www.w3.org/TR/CSP2/#delivery-html-meta-element">see `<meta>` recommendations</a> for CSP.</li>
       <li>If <a>resource hint link</a> is provided via the `Link` HTTP response header, then the relevant policies should also be delivered as an HTTP response header - e.g. see <a href="https://w3c.github.io/webappsec/specs/content-security-policy/#complications">Processing Complications</a> for CSP.</li>
     </ul>
   </section>
@@ -370,7 +370,7 @@
         <dt>Description:</dt>
         <dd>Used to indicate an origin that will be used to fetch required resources for the link context, and that the user agent ought to resolve as early as possible.</dd>
         <dt>Reference:</dt>
-        <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
+        <dd><a href="https://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (https://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
     </section>
 
@@ -382,7 +382,7 @@
         <dt>Description:</dt>
         <dd>Used to indicate an origin that will be used to fetch required resources for the link context. Initiating an early connection, which includes the DNS lookup, TCP handshake, and optional TLS negotiation, allows the user agent to mask the high latency costs of establishing a connection.</dd>
         <dt>Reference:</dt>
-        <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
+        <dd><a href="https://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (https://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
     </section>
 
@@ -394,7 +394,7 @@
         <dt>Description:</dt>
         <dd>The prefetch link relation type is used to identify a resource that might be required by the next navigation from the link context, and that the user agent ought to fetch, such that the user agent can deliver a faster response once the resource is requested in the future.</dd>
         <dt>Reference:</dt>
-        <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
+        <dd><a href="https://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (https://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
     </section>
 
@@ -406,7 +406,7 @@
         <dt>Description:</dt>
         <dd>Used to identify a resource that might be required by the next navigation from the link context, and that the user agent ought to fetch and execute, such that the user agent can deliver a faster response once the resource is requested in the future.</dd>
         <dt>Reference:</dt>
-        <dd><a href="http://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (http://www.w3.org/TR/resource-hints/)</a></dd>
+        <dd><a href="https://www.w3.org/TR/resource-hints/">W3C Resource Hints Specification (https://www.w3.org/TR/resource-hints/)</a></dd>
       </dl>
     </section>
 

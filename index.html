@@ -288,6 +288,18 @@
 
       <p>The decision on whether a resource hint is executed, and if so, whether full or partial processing is applied is deferred to the user agent. As a result, element-level `load` and `error` JavaScripts events are not guaranteed to fire, and if they do, do not guarantee that full processing was applied. However, the user agent SHOULD fire the appropriate `load` and `error` events when possible, to allow the application to track which hints were executed and when.</p>
     </section>
+
+    <section>
+      <h2>Integration with Service Workers</h2>
+
+      <p>The user agent MUST make fetches initiated via a <a>resource hint link</a> visible to relevant <a href="http://www.w3.org/TR/service-workers/#dfn-service-worker-registration">service worker registrations</a> ([[SERVICE-WORKERS]]):</p>
+
+      <ul>
+        <li><a>preconnect</a> does not invoke the <a href="http://www.w3.org/TR/service-workers/#on-fetch-request-algorithm">Fetch algorithm</a> and is thus not routed to any <a href="http://www.w3.org/TR/service-workers/#dfn-service-worker-registration">service worker registration</a>.</li>
+        <li><a>prefetch</a> requests MUST be routed to the <a href="http://www.w3.org/TR/service-workers/#dfn-containing-service-worker-registration">active service worker registration</a> of the current document.</li>
+        <li><a>prerender</a> requests MUST be routed to the <a href="http://www.w3.org/TR/service-workers/#dfn-containing-service-worker-registration">active service worker registration</a> whose <a href="http://www.w3.org/TR/service-workers/#dfn-scope-url">scope URL</a> matches the URL of the prerendered resource.</li>
+      </ul>
+    </section>
   </section>
 
   <section>

@@ -178,55 +178,6 @@
 
   <section>
     <h2>Process</h2>
-
-    <section>
-      <h2>Hint probability ("pr") attribute</h2>
-
-      <p>In addition to specifying the hint type, the application MAY indicate the expected probability that the specified resource hint will be used.</p>
-
-      <pre class="example html">
-  &lt;link rel="dns-prefetch" href="//widget.com" pr="0.75"&gt;
-  &lt;link rel="preconnect" href="//cdn.example.com" pr="0.42"&gt;
-  &lt;link rel="prefetch" href="//example.com/next-page.html" pr="0.75"&gt;
-  &lt;link rel="prerender" href="//example.com/thankyou.html" pr="0.25"&gt;
-      </pre>
-
-      <p>The <code><dfn>pr</dfn></code> attribute is a float value in the [0.0-1.0] range that MAY be used in the following cases:</p>
-
-      <ul>
-        <li>With <code><a>dns-prefetch</a></code> and <code><a>preconnect</a></code> relations to indicate probability of initiating a fetch against the specified origin, either within the current navigation context, or within the next navigation context.</li>
-        <li>With a <code><a>speculative fetch</a></code> relation to indicate probability of using the specified resource within the next navigation context.</li>
-      </ul>
-
-      <p>If the <code><a>pr</a></code> attribute is omitted for above cases, the user agent MAY assign a default probability value based on own heuristics, past navigation data, and other signals.</p>
-
-      <p>A hint probability of `1.0` does not guarantee that the hint will be executed by the user agent. Specified hints MAY be processed on a best effort basis by the user agent, and decision to process the hint MAY be based on the runtime context of the user agent &mdash; availability of CPU, GPU, memory, and networking resources &mdash; developer specified probability indicating the likelihood of that resource being used, specified user preferences, and other variables. The user agent MAY decide to:</p>
-
-      <ul>
-        <li>Execute some, none, or all of the optimizations implied by the resource hint, and may also invoke additional optimizations based on its own heuristics.</li>
-        <li>Execute a partial optimization relative to the specified hint due to resource constraints or other reasons.
-        <ul>
-          <li><code><a>preconnect</a></code> MAY fallback to a partial handshake (DNS only, or DNS+TCP for HTTPS origins).</li>
-          <li><code><a>speculative fetch</a></code> MAY fallback to <code><a>preconnect</a></code> for specified origin, or apply a custom preprocessing strategy for the target resource, and if applicable, its sub-resources: <code><a>preconnect</a></code> only; fetch the target resource but defer fetch of sub-resources; fetch sub-resources but delay their processing, and so on.</li>
-        </ul>
-        </li>
-      </ul>
-
-      <div class="note">
-        <p>To optimize the overall user experience the user agent should account for local context and specified probability of a speculative hint. For example, on a resource constrained device the user agent may decide to only execute high probability hints. Alternatively, it may decide to perform partial processing of the hint, such as downgrading <a>speculative fetch</a> to a <a>preconnect</a>, performing partial preprocessing, and so on. Performing a partial optimization allows the user agent to improve performance even if a full optimization cannot be performed. Conversely, on a device with sufficient resources, the user agent may execute all of the specified hints as far as possible.</p>
-      </div>
-
-      <section data-dfn-for="HTMLLinkElement">
-        <h2>Link element interface extensions</h2>
-        <pre class="idl">
-        partial interface HTMLLinkElement {
-          attribute DOMString pr;
-        };
-        </pre>
-        <p>The value of this element's <dfn>pr</dfn> attribute. The value of the attribute MUST be a float in the [0.0-1.0] range. Invalid values MUST be ignored by the user agent.</p>
-      </section>
-    </section>
-
     <section>
       <h2>Fetching the resource hint link</h2>
       <p>The <a>resource hint link</a>'s may be specified in the document markup, MAY be provided via the HTTP `Link` header, and MAY be dynamically added to and removed from the document.</p>
@@ -239,9 +190,9 @@
       </pre>
 
       <pre class="example js">
-  &lt;link rel="dns-prefetch" href="//widget.com" pr="0.75"&gt;
-  &lt;link rel="preconnect" href="//cdn.example.com" pr="0.42"&gt;
-  &lt;link rel="prerender" href="//example.com/next-page.html" pr="0.75"&gt;
+  &lt;link rel="dns-prefetch" href="//widget.com"&gt;
+  &lt;link rel="preconnect" href="//cdn.example.com"&gt;
+  &lt;link rel="prerender" href="//example.com/next-page.html"&gt;
   &lt;link rel="prefetch" href="//example.com/logo-hires.jpg" as="image"&gt;
       </pre>
 

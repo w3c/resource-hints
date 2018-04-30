@@ -124,7 +124,7 @@
       <p>The <code><dfn>prefetch</dfn></code> link relation type is used to identify a resource that might be required by the next navigation, and that the user agent SHOULD fetch, such that the user agent can deliver a faster response once the resource is requested in the future.</p>
 
       <pre class="example html">
-  &lt;link rel="prefetch" href="//example.com/next-page.html" as="html" crossorigin="use-credentials"&gt;
+  &lt;link rel="prefetch" href="//example.com/next-page.html" as="document" crossorigin="use-credentials"&gt;
   &lt;link rel="prefetch" href="/library.js" as="script"&gt;
       </pre>
 
@@ -199,7 +199,7 @@
       <pre class="example js">
   var hint = document.createElement("link");
   hint.rel = "prefetch";
-  hint.as = "html";
+  hint.as = "document";
   hint.href = "/article/part3.html";
   document.head.appendChild(hint);
       </pre>

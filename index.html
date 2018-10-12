@@ -260,7 +260,7 @@
 
       <p>For example, an image gallery may have knowledge about the likelihood of the next photo or page that may be requested by the user. To provide an improved experience the application can ask the user agent to begin fetching required resources (individual photos, critical resources, or the full page) before the next navigation is triggered.</p>
 
-      <p>To achieve the above behavior the application can specify one or more <a>prefetch</a> relations and optionally specify the probability (via <a>pr</a> attribute) of each resource being used.</p>
+      <p>To achieve the above behavior the application can specify one or more <a>prefetch</a> relations of each resource being used.</p>
     </section>
 
     <section>
@@ -277,8 +277,6 @@
       <p>The <a>prerender</a> hint can be used to prerender the destination page, enabling an instant navigation experience once the user triggers the navigation.</p>
 
       <p>To deliver an instant navigation experience the application can specify one or more <a>prerender</a> relations, each of which points to a destination page (an HTML resource). In turn, the user agent may fetch and process the HTML document, fetch its subresources, and perform other work to deliver an instant navigation - i.e. "prerender" the page.</p>
-
-      <p>Finally, because prerendering may require a lot of resources, the application can specify the probability (via <code><a>pr</a></code> attribute) of each target to help the user agent deliver the best user experience.</p>
     </section>
   </section>
 

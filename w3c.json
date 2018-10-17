@@ -1,6 +1,9 @@
 {
-  "group":     45211
-, "contacts":  ["plehegar"]
-, "shortName": "resource-hints"
-, "policy":    "open"
+  "group": 45211,
+  "contacts": [
+    "plehegar"
+  ],
+  "shortName": "resource-hints",
+  "policy": "open",
+  "repo-type": "rec-track"
 }

@@ -44,7 +44,7 @@
 
 <body>
   <section id='abstract'>
-    <p>This specification defines the <a>dns-prefetch</a>, <a>preconnect</a>, <a>prefetch</a>, and <a>prerender</a> relationships of the HTML Link Element (`<link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch and preprocess to improve page performance.</p>
+    <p>This specification defines the <a>dns-prefetch</a>, <a>preconnect</a>, <a>prefetch</a>, and <a>prerender</a> relationships of the HTML Link Element (`&lt;link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch and preprocess to improve page performance.</p>
   </section>
 
   <section id='sotd'>
@@ -67,7 +67,7 @@
 
     <p>Many web applications already leverage a variety of prefetching techniques. This includes, but is not limited to, using `XMLHttpRequest` to fetch and cache assets before they are needed. However, these implementations are application specific, are not interoperable, and do not provide the same level of performance as the browser-provided primitives. Worse, these implementations sometimes conflict with the browser logic and result in delayed or unnecessary resource fetches that degrade overall page performance.</p>
 
-    <p>This specification defines the <a>dns-prefetch</a>, <a>preconnect</a>, <a>prefetch</a>, and <a>prerender</a> relationships of the HTML Link Element (`<link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch and preprocess to improve page performance.</p>
+    <p>This specification defines the <a>dns-prefetch</a>, <a>preconnect</a>, <a>prefetch</a>, and <a>prerender</a> relationships of the HTML Link Element (`&lt;link>`). These primitives enable the developer, and the server generating or delivering the resources, to assist the user agent in the decision process of which origins it should connect to, and which resources it should fetch and preprocess to improve page performance.</p>
   </section>
 
   <section>
@@ -298,7 +298,7 @@
     <p>The site author SHOULD take necessary precautions to specify the relevant [[!MIXED-CONTENT]], [[!CSP3]], and [[!REFERRER-POLICY]] policies to allow the user agent to register and apply them prior to processing a <a>resource hint link</a>:</p>
 
     <ul>
-      <li>If <a>resource hint link</a> is provided via HTML markup, then the relevant `<meta>` policies SHOULD be declared ahead of them - e.g. <a href="https://www.w3.org/TR/CSP2/#delivery-html-meta-element">see `<meta>` recommendations</a> for CSP.</li>
+      <li>If <a>resource hint link</a> is provided via HTML markup, then the relevant `&lt;meta>` policies SHOULD be declared ahead of them - e.g. <a href="https://www.w3.org/TR/CSP2/#delivery-html-meta-element">see `&lt;meta>` recommendations</a> for CSP.</li>
       <li>If <a>resource hint link</a> is provided via the `Link` HTTP response header, then the relevant policies should also be delivered as an HTTP response header - e.g. see <a href="https://w3c.github.io/webappsec/specs/content-security-policy/#complications">Processing Complications</a> for CSP.</li>
     </ul>
   </section>
